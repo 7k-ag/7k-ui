@@ -15,7 +15,9 @@ function App() {
         }}
       >
         <Box>
-          <Heading>dApp Starter Template</Heading>
+          <Heading className="text-3xl font-bold underline">
+            dApp Starter Template
+          </Heading>
         </Box>
 
         <Box>

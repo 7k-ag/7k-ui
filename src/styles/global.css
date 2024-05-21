@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Outfit";
+  font-weight: 400;
+  src: url("../assets/fonts/outfit/Outfit-Regular.otf");
+}
+
+@font-face {
+  font-family: "Outfit";
+  font-weight: 500;
+  src: url("../assets/fonts/outfit/Outfit-Medium.otf");
+}
+
+@font-face {
+  font-family: "Outfit";
+  font-weight: 600;
+  src: url("../assets/fonts/outfit/Outfit-SemiBold.otf");
+}
+
+@font-face {
+  font-family: "Outfit";
+  font-weight: 700;
+  src: url("../assets/fonts/outfit/Outfit-Bold.otf");
+}
+
+@font-face {
+  font-family: "CyberwayRiders";
+  font-weight: 400;
+  src: url("../assets/fonts/cyberway-riders/CyberwayRiders.otf");
+}
+
+@layer base {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    font-size: 12px;
+    font-family:
+      Outfit,
+      -apple-system,
+      BlinkMacSystemFont,
+      Segoe UI,
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      Fira Sans,
+      Droid Sans,
+      Helvetica Neue,
+      sans-serif;
+  }
+}
+
+.body {
+  background-color: #0b0d14;
+  color: #ffffff;
+}
