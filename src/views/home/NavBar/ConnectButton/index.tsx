@@ -3,14 +3,14 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import AccountDropdownMenu from "./AccountDropdownMenu";
 import { ICWallet } from "@/assets/icons";
 
-type ConnectButtonProps = {
+type Props = {
   connectText?: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 function ConnectButton({
   connectText = "Connect Wallet",
   ...buttonProps
-}: ConnectButtonProps) {
+}: Props) {
   const currentAccount = useCurrentAccount();
   return currentAccount ? (
     <AccountDropdownMenu currentAccount={currentAccount} />
