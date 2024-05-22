@@ -10,7 +10,7 @@ type Props = {
   currentAccount: WalletAccount;
 };
 
-function AccountDropdownMenu({ currentAccount }: Props) {
+function AccountPopover({ currentAccount }: Props) {
   const [openPopover, setOpenPopover] = useState(false);
 
   return (
@@ -56,4 +56,4 @@ function AccountDropdownMenu({ currentAccount }: Props) {
   );
 }
 
-export default AccountDropdownMenu;
+export default AccountPopover;

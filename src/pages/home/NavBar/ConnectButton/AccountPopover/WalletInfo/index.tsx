@@ -32,7 +32,7 @@ function WalletInfo({ currentAccount }: Props) {
         </div>
       </div>
       <div className="flex flex-col gap-4 p-4 rounded-[0.625rem] bg-[#252734] text-[#A8A8C7]">
-        <div className="text-sm h-6">Balance</div>
+        <div className="text-sm h-6">Balances</div>
         <ScrollArea className="h-40 -mr-2 pr-2">
           <TokenBalances />
           <ScrollBar className="w-1.5" />

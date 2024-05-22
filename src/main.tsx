@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "@mysten/dapp-kit/dist/index.css";
 import "./styles/global.css";
@@ -14,6 +14,10 @@ import { Theme } from "@radix-ui/themes";
 import App from "./App.tsx";
 import { uiKitDarkTheme } from "./themes/index.tsx";
 import { LazyMotion } from "framer-motion";
+import useTheme from "./hooks/useTheme.tsx";
+import { useScreenSize } from "./hooks/dom/useScreenSize.tsx";
+import { getDefaultStore } from "jotai";
+import { screenSizeAtom } from "./atoms/layout.atom.ts";
 
 const loadFramerMotionFeatures = () =>
   import("@/utils/motion/domMax").then((res) => res.default);
@@ -27,6 +31,15 @@ const { networkConfig } = createNetworkConfig({
   mainnet: { url: getFullnodeUrl("mainnet") },
 });
 
+const GlobalHooks = () => {
+  useTheme();
+  const screenSize = useScreenSize();
+  useEffect(() => {
+    getDefaultStore().set(screenSizeAtom, screenSize);
+  }, [screenSize]);
+  return null;
+};
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Theme appearance="dark">
@@ -37,6 +50,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         >
           <WalletProvider theme={uiKitDarkTheme} autoConnect>
             <LazyMotion features={loadFramerMotionFeatures}>
+              <GlobalHooks />
               <App />
             </LazyMotion>
           </WalletProvider>

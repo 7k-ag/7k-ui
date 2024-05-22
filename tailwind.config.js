@@ -1,7 +1,35 @@
+import { withOpacity, generateColorItems } from "./src/twPlugins/utils";
 const defaultTheme = require("tailwindcss/defaultTheme");
 
+const colorCssVars = {
+  red: generateColorItems("red", [100, 80]),
+  green: generateColorItems("green", [100, 80, 20, 10]),
+  yellow: generateColorItems("yellow", [100, 80, 10]),
+  iris: generateColorItems("iris", [100, 80, 60]),
+  pink: generateColorItems("pink", [100, 80, 60]),
+  gray: generateColorItems("gray", [100, 60, 40, 20, 10]),
+  theme: generateColorItems("skin", [
+    "000",
+    "001",
+    "002",
+    "003",
+    "004",
+    100,
+    101,
+    102,
+    200,
+    201,
+    202,
+    203,
+    204,
+    300,
+    301,
+    302,
+  ]),
+};
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
+  darkMode: "selector",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -15,6 +43,9 @@ module.exports = {
         xs: "475px",
         "3xl": "1920px",
         ...defaultTheme.screens,
+      },
+      gridTemplateColumns: {
+        14: "repeat(14, minmax(0, 1fr))",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -41,9 +72,8 @@ module.exports = {
         "m-2xl": "1.3125rem",
       },
       fontFamily: {
-        samsungSharpSans: ["SamsungSharpSans", ...defaultTheme.fontFamily.sans],
-        outfit: ["Outfit", ...defaultTheme.fontFamily.sans],
-        cyberwayRiders: ["CyberwayRiders", ...defaultTheme.fontFamily.sans],
+        samsung: ["SamsungSharpSans", ...defaultTheme.fontFamily.sans],
+        outfit: ["Outfit"],
       },
       colors: {
         blueviolet: "#9747ff",
@@ -54,13 +84,15 @@ module.exports = {
           DEFAULT: "#fff",
           100: "#fff",
           80: "#FDFDFF",
+          inverted: {
+            DEFAULT: "#28273D",
+          },
         },
         gray: {
-          100: "#868098",
-          60: "#B7B7D7",
-          40: "#CCCCD5",
           20: "#F2F1F5",
-          10: "#FCFBFE",
+          inverted: {
+            20: "#35344A",
+          },
         },
         black: {
           DEFAULT: "#000",
@@ -68,35 +100,86 @@ module.exports = {
           80: "#221533",
           70: "#2E1D45",
           60: "#615078",
+          inverted: {
+            100: "#FCFBFE",
+            80: "#FDFDFF",
+            70: "#464567",
+          },
         },
         red: {
-          100: "#df0252",
+          20: "#FF005C",
           80: "#FF005C",
-          20: "#FFF2F7",
+          inverted: {
+            80: "#FF2882",
+          },
         },
         green: {
-          100: "#04B793",
-          80: "#05c9a1",
-          20: "#E6FAF6",
-          10: "#F2FCFA",
+          80: "#05C9A1",
+          inverted: {
+            80: "#9BFF99",
+          },
         },
         yellow: {
-          100: "#FFC01D",
+          100: "#EBAA2A",
         },
         iris: {
-          100: "#5D5FEF",
-          80: "#7879F1",
-          60: "#A5A6F6",
           40: "#E6E7FF",
           25: "#EAEAFD",
           20: "#F1F1FF",
+          inverted: {
+            20: "#191824",
+          },
         },
-        pink: {
-          100: "#EF5DA8",
-          80: "#F178B6",
-          60: "#FFF0F7",
-        },
+        pink: {},
         electricblue: "#000FFE",
+      },
+      textColor: {
+        skin: {
+          base: withOpacity("--color-text-base"),
+          alt: withOpacity("--color-text-alt"),
+          muted: withOpacity("--color-text-muted"),
+          inverted: withOpacity("--color-text-inverted"),
+        },
+        ...colorCssVars,
+      },
+      backgroundColor: {
+        skin: {
+          base: withOpacity("--color-bg-base"),
+          alt: withOpacity("--color-bg-alt"),
+          card: withOpacity("--color-bg-card"),
+          muted: withOpacity("--color-bg-muted"),
+          "base-inverted": withOpacity("--color-bg-base-inverted"),
+          "card-inverted": withOpacity("--color-bg-card-inverted"),
+          success: withOpacity("--color-bg-success"),
+          hotkey: withOpacity("--color-bg-hotkey"),
+          countdown: withOpacity("--color-bg-countdown"),
+          100: withOpacity("--color-skin-100"),
+          204: withOpacity("--color-skin-204"),
+        },
+        ...colorCssVars,
+      },
+      boxShadowColor: {
+        skin: {
+          base: withOpacity("--color-shadow-base"),
+          alt: withOpacity("--color-shadow-alt"),
+        },
+        ...colorCssVars,
+      },
+      borderColor: {
+        skin: {
+          base: withOpacity("--color-border-base"),
+          alt: withOpacity("--color-border-alt"),
+          card: withOpacity("--color-bg-card"),
+          100: withOpacity("--color-skin-100"),
+          "001": withOpacity("--color-skin-001"),
+        },
+        ...colorCssVars,
+      },
+      caretColor: {
+        ...colorCssVars,
+      },
+      fill: {
+        ...colorCssVars,
       },
       boxShadow: {
         soft: "0px 8px 25px",
@@ -129,5 +212,9 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [
+    require("tailwind-scrollbar-hide"),
+    require("./src/twPlugins/button"),
+    require("./src/twPlugins/colored-drop-shadow"),
+  ],
 };

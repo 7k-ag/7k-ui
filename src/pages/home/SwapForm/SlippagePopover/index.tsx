@@ -10,7 +10,7 @@ import InputCurrency from "@/components/InputCurrency";
 import BigNumber from "bignumber.js";
 import TextAmt from "@/components/TextAmt";
 
-function SlippageMenu() {
+function SlippagePopover() {
   const [openPopover, setOpenPopover] = useState(false);
   const [slippage, setSlippage] = useAtom(agSlippageAtom);
   const [displaySlip, setDisplaySlip] = useInputNumberString(
@@ -129,7 +129,7 @@ function SlippageMenu() {
                 </div>
               </div>
               <button
-                className="flex items-center justify-center px-4 py-2 rounded-xl bg-iris-100 font-cyberwayRiders font-normal text-lg disabled:cursor-not-allowed disabled:opacity-60"
+                className="flex items-center justify-center px-4 py-2 rounded-xl bg-iris-100 text-sm disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={!tempSlippage.greaterThan(0)}
                 onClick={handleConfirm}
               >
@@ -143,4 +143,4 @@ function SlippageMenu() {
   );
 }
 
-export default SlippageMenu;
+export default SlippagePopover;
