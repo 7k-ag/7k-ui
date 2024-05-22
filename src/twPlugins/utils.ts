@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const utils = require("tailwindcss/lib/util/color");
 /* Converts HEX color to RGB */
 export const toRGB = (value: string) => utils.parseColor(value).color.join(" ");

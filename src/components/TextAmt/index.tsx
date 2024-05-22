@@ -1,6 +1,6 @@
-import { formatAmount } from "@/utils/format";
 import BigNumber from "bignumber.js";
 import React, { memo, useMemo } from "react";
+import { formatAmount } from "@bicarus/utils";
 
 export type TextAmtProps = {
   number?: BigNumber.Value | null;

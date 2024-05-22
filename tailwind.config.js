@@ -129,8 +129,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwind-scrollbar-hide"),
-    require("./src/twPlugins/button"),
-  ],
+  plugins: [require("tailwind-scrollbar-hide")],
 };

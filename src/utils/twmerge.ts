@@ -26,7 +26,6 @@ import { twMerge } from "tailwind-merge";
 
 const tw = twMerge;
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export function mergeClassObject<T extends Record<any, any>>(...obj: T[]) {
   return obj.reduce(
     (sum, o) => ({

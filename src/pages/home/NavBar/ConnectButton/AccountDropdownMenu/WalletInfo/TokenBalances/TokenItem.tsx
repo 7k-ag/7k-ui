@@ -26,7 +26,7 @@ function TokenItem({ item }: Props) {
           alt={data?.name}
           className="w-5 h-5"
         />
-        <span>{data.symbol}</span>
+        <span className="truncate">{data.symbol}</span>
       </div>
       <TextAmt number={formatBalance(item.totalBalance, data?.decimals ?? 9)} />
     </div>

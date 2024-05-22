@@ -1,7 +1,7 @@
 import type { WalletAccount } from "@mysten/wallet-standard";
 import { ICWallet, ICChevronDown } from "@/assets/icons";
 import { formatAddress } from "@mysten/sui.js/utils";
-import * as Popover from "@radix-ui/react-popover";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { useState } from "react";
 import WalletInfo from "./WalletInfo";
 import { AnimatePresence, m } from "framer-motion";
@@ -14,8 +14,8 @@ function AccountDropdownMenu({ currentAccount }: Props) {
   const [openPopover, setOpenPopover] = useState(false);
 
   return (
-    <Popover.Root open={openPopover} onOpenChange={setOpenPopover}>
-      <Popover.Trigger asChild>
+    <PopoverPrimitive.Root open={openPopover} onOpenChange={setOpenPopover}>
+      <PopoverPrimitive.Trigger asChild>
         <button className="inline-flex gap-4 items-center justify-center px-4 py-2 h-10 rounded-xl bg-[#252734] text-white">
           <span className="inline-flex gap-2">
             <ICWallet className="w-4 aspect-square" />
@@ -23,10 +23,10 @@ function AccountDropdownMenu({ currentAccount }: Props) {
           </span>
           <ICChevronDown className="w-4 aspect-square text-gray-100" />
         </button>
-      </Popover.Trigger>
-      <Popover.Content
+      </PopoverPrimitive.Trigger>
+      <PopoverPrimitive.Content
         forceMount
-        side="top"
+        side="bottom"
         align="end"
         sideOffset={8}
         className="z-10"
@@ -51,8 +51,8 @@ function AccountDropdownMenu({ currentAccount }: Props) {
             </m.div>
           )}
         </AnimatePresence>
-      </Popover.Content>
-    </Popover.Root>
+      </PopoverPrimitive.Content>
+    </PopoverPrimitive.Root>
   );
 }
 
