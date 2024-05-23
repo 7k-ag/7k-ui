@@ -1,8 +1,8 @@
 import Avatar from "@/components/Avatar";
 import TextAmt from "@/components/TextAmt";
 import { STATIC_TOKENS_MAP } from "@/constants/tokens/staticTokensMap";
+import useTokenMetadata from "@/hooks/tokens/useTokenMetadata";
 import { formatBalance } from "@/utils/number";
-import { useSuiClientQuery } from "@mysten/dapp-kit";
 import { CoinBalance } from "@mysten/sui.js/client";
 import BigNumber from "bignumber.js";
 
@@ -11,9 +11,7 @@ type Props = {
 };
 
 function TokenItem({ item }: Props) {
-  const { data } = useSuiClientQuery("getCoinMetadata", {
-    coinType: item.coinType,
-  });
+  const { data } = useTokenMetadata(item.coinType);
 
   if (!data || new BigNumber(item.totalBalance).isZero()) {
     return null;

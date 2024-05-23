@@ -1,28 +1,11 @@
-import { useCurrentAccount, useSuiClientQuery } from "@mysten/dapp-kit";
 import { VList } from "virtua";
 import TokenItem from "./TokenItem";
-import { useMemo } from "react";
-import BigNumber from "bignumber.js";
+import useAccountBalances from "@/hooks/accounts/useAccountBalances";
 
 function TokenBalances() {
-  const account = useCurrentAccount();
-  const { data } = useSuiClientQuery(
-    "getAllBalances",
-    {
-      owner: account?.address as string,
-    },
-    {
-      enabled: !!account,
-    },
-  );
+  const { list: balances } = useAccountBalances();
 
-  const balances = useMemo(() => {
-    return data?.filter((token) =>
-      new BigNumber(token.totalBalance).isGreaterThan(0),
-    );
-  }, [data]);
-
-  if (!account || !balances?.length) {
+  if (!balances) {
     return null;
   }
 
@@ -36,7 +19,6 @@ function TokenBalances() {
       ))}
     </VList>
   );
-  return null;
 }
 
 export default TokenBalances;

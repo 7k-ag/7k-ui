@@ -1,5 +1,5 @@
+import { EXPLORER } from "@/constants/explorer";
 import React, { memo, useMemo } from "react";
-import { network } from "./constants";
 
 type Props = Omit<JSX.IntrinsicElements["a"], "href"> & {
   txHash: string;
@@ -8,8 +8,8 @@ type Props = Omit<JSX.IntrinsicElements["a"], "href"> & {
 const ExplorerTxLink = React.forwardRef<HTMLAnchorElement, Props>(
   function ExplorerAccount({ txHash, ...props }, ref) {
     const link = useMemo(() => {
-      return `${network.explorerAddress}/txblock/${txHash}`;
-    }, [txHash, network.explorerAddress]);
+      return `${EXPLORER.ADDRESS}/${import.meta.env.VITE_NETWORK}/tx/${txHash}`;
+    }, [txHash]);
     return (
       <a target="_blank" rel="noreferrer" {...props} ref={ref} href={link} />
     );
