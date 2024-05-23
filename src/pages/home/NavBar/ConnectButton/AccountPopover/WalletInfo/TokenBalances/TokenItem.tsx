@@ -1,5 +1,6 @@
 import Avatar from "@/components/Avatar";
 import TextAmt from "@/components/TextAmt";
+import { STATIC_TOKENS_MAP } from "@/constants/tokens/staticTokensMap";
 import { formatBalance } from "@/utils/number";
 import { useSuiClientQuery } from "@mysten/dapp-kit";
 import { CoinBalance } from "@mysten/sui.js/client";
@@ -22,7 +23,7 @@ function TokenItem({ item }: Props) {
     <div className="h-8 flex items-center justify-between gap-2">
       <div className="flex items-center gap-2">
         <Avatar
-          src={data?.iconUrl || ""}
+          src={data?.iconUrl || STATIC_TOKENS_MAP[data?.symbol] || ""}
           alt={data?.name}
           className="w-5 h-5"
         />

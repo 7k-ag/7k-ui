@@ -72,8 +72,8 @@ export default {
         "m-2xl": "1.3125rem",
       },
       fontFamily: {
-        samsung: ["SamsungSharpSans", ...defaultTheme.fontFamily.sans],
-        outfit: ["Outfit"],
+        outfit: ["Outfit", ...defaultTheme.fontFamily.sans],
+        cyberwayRiders: ["CyberwayRiders", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         blueviolet: "#9747ff",
@@ -123,6 +123,7 @@ export default {
           100: "#EBAA2A",
         },
         iris: {
+          100: "#5D5FEF",
           40: "#E6E7FF",
           25: "#EAEAFD",
           20: "#F1F1FF",

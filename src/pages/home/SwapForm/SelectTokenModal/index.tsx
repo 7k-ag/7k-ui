@@ -8,6 +8,8 @@ import {
 } from "@/components/UI/Dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/UI/Sheet";
 import { useMemo, useState } from "react";
+import Avatar from "@/components/Avatar";
+import { ICChevronDown } from "@/assets/icons";
 
 function SelectTokenModal() {
   const isMobile = useAtomValue(isMobileAtom);
@@ -16,10 +18,16 @@ function SelectTokenModal() {
   const trigger = useMemo(
     () => (
       <button
-        className="flex items-center gap-2 text-sm font-semibold text-primary"
+        className="flex items-center gap-2 p-3 rounded-xl"
         onClick={() => setOpen(true)}
       >
-        Select a token
+        <Avatar
+          src="https://strapi-dev.scand.app/uploads/sui_c07df05f00.png"
+          alt="SUI"
+          className="w-5 aspect-square"
+        />
+        <span className="text-sm/none">SUI</span>
+        <ICChevronDown className="w-4 aspect-square text-gray-100" />
       </button>
     ),
     [],
