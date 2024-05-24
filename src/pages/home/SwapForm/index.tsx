@@ -5,7 +5,7 @@ import SelectTokenModal from "./SelectTokenModal";
 import { ICFrame, ICWallet } from "@/assets/icons";
 import ImgSwap from "@/assets/images/swap.png";
 import { ConnectModal, useCurrentAccount } from "@mysten/dapp-kit";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAtom } from "jotai";
 import {
   agAmountInAtom,
@@ -16,10 +16,13 @@ import TextAmt from "@/components/TextAmt";
 import BigNumber from "bignumber.js";
 import tw from "@/utils/twmerge";
 import useAccountBalances from "@/hooks/accounts/useAccountBalances";
-import { formatBalance } from "@/utils/number";
+import { formatBalance, formatRawBalance } from "@/utils/number";
 import { checkIsSui } from "@/utils/token";
 import { MINIMUM_SUI_AMT } from "@/constants/amount";
-import { SUI_TOKEN } from "@/constants/tokens/token";
+// import { SUI_TOKEN } from "@/constants/tokens/token";
+import useAgSor from "@/hooks/aggregator/useAgSor";
+import useTokenMetadata from "@/hooks/tokens/useTokenMetadata";
+import { Checkbox } from "@/components/UI/Checkbox";
 
 function SwapForm() {
   const [tokenIn, setTokenIn] = useAtom(agTokenInAtom);
@@ -29,16 +32,36 @@ function SwapForm() {
   const tokenInId = useMemo(() => tokenIn?.type, [tokenIn]);
   const tokenOutId = useMemo(() => tokenOut?.type, [tokenOut]);
 
+  const enabledAgSor = useMemo(() => {
+    return (
+      !!tokenInId &&
+      !!tokenOutId &&
+      tokenInId !== tokenOutId &&
+      !!amountIn &&
+      new BigNumber(amountIn).gt(0)
+    );
+  }, [tokenInId, tokenOutId, amountIn]);
+
+  const { data: agSorData, refetch: refetchAgSor } = useAgSor({
+    tokenInId: tokenInId,
+    tokenOutId: tokenOutId,
+    amountIn: amountIn
+      ? formatRawBalance(amountIn, tokenIn?.decimals).toString()
+      : "",
+    enabled: enabledAgSor,
+    refetchInterval: 6000,
+  });
+
   const { obj: accountBalancesObj } = useAccountBalances();
 
-  const suiBalance = useMemo(() => {
-    if (accountBalancesObj?.[SUI_TOKEN.type]) {
-      return new BigNumber(
-        formatBalance(accountBalancesObj[SUI_TOKEN.type], SUI_TOKEN.decimals),
-      );
-    }
-    return new BigNumber(0);
-  }, [accountBalancesObj, tokenInId]);
+  // const suiBalance = useMemo(() => {
+  //   if (accountBalancesObj?.[SUI_TOKEN.type]) {
+  //     return new BigNumber(
+  //       formatBalance(accountBalancesObj[SUI_TOKEN.type], SUI_TOKEN.decimals),
+  //     );
+  //   }
+  //   return new BigNumber(0);
+  // }, [accountBalancesObj, tokenInId]);
 
   const tokenInBalance = useMemo(() => {
     if (accountBalancesObj?.[tokenInId]) {
@@ -49,12 +72,34 @@ function SwapForm() {
     return new BigNumber(0);
   }, [accountBalancesObj, tokenInId]);
 
+  const amountOut = useMemo(() => {
+    return agSorData?.returnAmount || "0";
+  }, [agSorData]);
+
+  const { data: tokenInData, isLoading: isLoadingTokenInData } =
+    useTokenMetadata(tokenInId);
+  const { data: tokenOutData, isLoading: isLoadingTokenOutData } =
+    useTokenMetadata(tokenOutId);
+
+  const tokenInPrice = useMemo(() => {
+    return tokenInData?.tokenPrice || 0;
+  }, [tokenInData]);
+  const tokenOutPrice = useMemo(() => {
+    return tokenOutData?.tokenPrice || 0;
+  }, [tokenOutData]);
+
   const amountInUsdValue = useMemo(() => {
     if (!amountIn) {
-      return 0;
+      return new BigNumber(0);
     }
-    return new BigNumber(amountIn).multipliedBy(tokenIn?.tokenPrice ?? 0);
+    return new BigNumber(amountIn).multipliedBy(tokenInPrice);
   }, [tokenIn, tokenOut, amountIn]);
+  const amountOutUsdValue = useMemo(() => {
+    if (!agSorData?.returnAmount) {
+      return new BigNumber(0);
+    }
+    return new BigNumber(agSorData.returnAmount).multipliedBy(tokenOutPrice);
+  }, [tokenIn, tokenOut, agSorData]);
 
   const handleClickBalance = useCallback(() => {
     if (checkIsSui(tokenInId)) {
@@ -71,15 +116,31 @@ function SwapForm() {
   }, [tokenIn, tokenOut]);
 
   const currentAccount = useCurrentAccount();
-  const isInsufficientSuiBalance = useMemo(() => {
-    return suiBalance.isLessThanOrEqualTo(0);
-  }, [suiBalance]);
+  // const isInsufficientSuiBalance = useMemo(() => {
+  //   return suiBalance.isLessThanOrEqualTo(0);
+  // }, [suiBalance]);
   const isInsufficientBalance = useMemo(() => {
     if (!amountIn) {
       return false;
     }
     return tokenInBalance.isLessThan(amountIn);
   }, [amountIn, tokenInBalance]);
+  const isPriceImpactTooHigh = useMemo(() => {
+    return (agSorData?.priceImpact || 0) * 100 > 30;
+  }, [agSorData]);
+
+  const [isConfirmSwapAnyway, setIsConfirmSwapAnyway] = useState(false);
+  useEffect(() => {
+    if (isPriceImpactTooHigh) setIsConfirmSwapAnyway(false);
+  }, [isPriceImpactTooHigh]);
+  const isInvalidAmountOut = useMemo(() => {
+    return new BigNumber(amountOut).lte(0);
+  }, [amountOut]);
+
+  const handleSwap = useCallback(() => {
+    console.log("Swap", tokenIn, tokenOut, amountIn);
+  }, [tokenIn, tokenOut, amountIn]);
+
   const actionButton = useMemo(() => {
     if (!currentAccount) {
       return (
@@ -94,16 +155,16 @@ function SwapForm() {
       );
     }
 
-    if (isInsufficientSuiBalance) {
-      return (
-        <button
-          className="flex items-center justify-center p-4 rounded-2xl bg-[#343B51] h-[4.25rem] text-white disabled:cursor-not-allowed disabled:opacity-60"
-          disabled
-        >
-          <span className="text-lg/none">Insufficient SUI balance</span>
-        </button>
-      );
-    }
+    // if (isInsufficientSuiBalance) {
+    //   return (
+    //     <button
+    //       className="flex items-center justify-center p-4 rounded-2xl bg-[#343B51] h-[4.25rem] text-white disabled:cursor-not-allowed disabled:opacity-60"
+    //       disabled
+    //     >
+    //       <span className="text-lg/none">Insufficient SUI balance</span>
+    //     </button>
+    //   );
+    // }
 
     if (!amountIn || !tokenIn) {
       return (
@@ -129,8 +190,48 @@ function SwapForm() {
       );
     }
 
+    if (isPriceImpactTooHigh) {
+      const confirmElement = (
+        <div className="flex items-center gap-2.5">
+          <div onClick={(e) => e.stopPropagation()}>
+            <Checkbox
+              checked={isConfirmSwapAnyway}
+              onCheckedChange={(checked) =>
+                setIsConfirmSwapAnyway(checked as boolean)
+              }
+              className="border-white text-white"
+              boxClassName="border-white group-hover:border-white group-data-[state=checked]:bg-transparent group-data-[state=checked]:border-white"
+            />
+          </div>
+          <span className="text-lg/none">Yes, I still want to swap</span>
+        </div>
+      );
+
+      if (!isConfirmSwapAnyway) {
+        return (
+          <div className="flex items-center justify-center p-4 rounded-2xl bg-[#343B51] h-[4.25rem] text-white">
+            {confirmElement}
+          </div>
+        );
+      }
+
+      return (
+        <a
+          className="flex items-center justify-center p-4 rounded-2xl bg-[#F24DB0] h-[4.25rem] text-white cursor-pointer hover:bg-[#FD65C0] hover:shadow-soft-3 hover:shadow-[#F24DB0]"
+          type="button"
+          onClick={handleSwap}
+        >
+          {confirmElement}
+        </a>
+      );
+    }
+
     return (
-      <button className="relative overflow-hidden flex items-center justify-center p-4 rounded-2xl bg-iris-100 text-white font-cyberwayRiders text-[2rem]/none shadow-soft-3 shadow-[rgba(102,103,238,0.50)] hover:bg-[#6667EE] hover:shadow-[#6667EE] active:bg-[#3E40E3] active:shadow-none">
+      <button
+        className="relative overflow-hidden flex items-center justify-center p-4 rounded-2xl bg-iris-100 text-white font-cyberwayRiders text-[2rem]/none shadow-soft-3 shadow-[rgba(102,103,238,0.50)] hover:bg-[#6667EE] hover:shadow-[#6667EE] active:bg-[#3E40E3] active:shadow-none"
+        onClick={handleSwap}
+        disabled={isInvalidAmountOut}
+      >
         <span className="z-10">Swap</span>
         <img
           src={ImgSwap}
@@ -141,10 +242,13 @@ function SwapForm() {
     );
   }, [
     currentAccount,
-    isInsufficientSuiBalance,
+    // isInsufficientSuiBalance,
     amountIn,
-    isInsufficientBalance,
     tokenIn,
+    isInsufficientBalance,
+    isPriceImpactTooHigh,
+    isConfirmSwapAnyway,
+    isInvalidAmountOut,
   ]);
 
   return (
@@ -154,7 +258,7 @@ function SwapForm() {
           <span className="text-sm/none font-semibold">Swap</span>
         </div>
         <div className="flex items-center gap-2">
-          <RefreshButton />
+          <RefreshButton onClick={refetchAgSor} disabled={!enabledAgSor} />
           <SlippagePopover />
         </div>
       </div>
@@ -170,7 +274,10 @@ function SwapForm() {
             />
             <SelectTokenModal
               token={tokenIn}
-              setToken={setTokenIn}
+              setToken={(token) => {
+                setTokenIn(token);
+                setAmountIn("");
+              }}
               pivotTokenId={tokenOutId}
               accountBalancesObj={accountBalancesObj}
             />
@@ -180,7 +287,7 @@ function SwapForm() {
               number={amountInUsdValue}
               className={tw(
                 "text-[#A8A8C7] text-2xs font-light",
-                !amountIn && "invisible",
+                (!amountIn || isLoadingTokenInData) && "invisible",
               )}
               prefix="~ $"
             />
@@ -211,7 +318,7 @@ function SwapForm() {
               className="flex-1 p-2 outline-none bg-transparent text-lg sm:text-2xl overflow-hidden grow disabled:text-[#868098]"
               placeholder="0"
               disabled
-              value={102}
+              value={amountOut}
             />
             <SelectTokenModal
               token={tokenOut}
@@ -222,8 +329,11 @@ function SwapForm() {
           </div>
           <div className="flex items-center justify-between gap-2.5 p-2 rounded-xl">
             <TextAmt
-              number={100.23}
-              className="text-[#A8A8C7] text-2xs font-light"
+              number={amountOutUsdValue}
+              className={tw(
+                "text-[#A8A8C7] text-2xs font-light",
+                isLoadingTokenOutData && "invisible",
+              )}
               prefix="~ $"
             />
             <span className="font-normal invisible">

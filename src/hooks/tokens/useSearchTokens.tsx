@@ -19,6 +19,7 @@ const useSearchTokens = (searchTerm: string) => {
       }
       return response.json();
     },
+    enabled: !!searchTerm,
   });
 
   const formattedData: StaticToken[] =

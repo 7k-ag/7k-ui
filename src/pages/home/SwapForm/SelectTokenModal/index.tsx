@@ -108,7 +108,7 @@ function SelectTokenModal({
   );
 
   const tokenList = useMemo(() => {
-    if (isLoading) {
+    if (searchTerm && isLoading) {
       return (
         <VList style={{ height: 320 }} className="vlist">
           <Repeat count={10}>
@@ -136,7 +136,7 @@ function SelectTokenModal({
         ))}
       </VList>
     );
-  }, [isLoading, tokenBalances]);
+  }, [searchTerm, isLoading, tokenBalances]);
 
   const content = useMemo(
     () => (
