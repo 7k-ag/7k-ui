@@ -11,7 +11,7 @@ type Props = {
 };
 
 function TokenItem({ item }: Props) {
-  const { data } = useTokenMetadata(item.coinType);
+  const { data } = useTokenMetadata(item.coinType, { useStatic: true });
 
   if (!data || new BigNumber(item.totalBalance).isZero()) {
     return null;
@@ -21,13 +21,15 @@ function TokenItem({ item }: Props) {
     <div className="h-8 flex items-center justify-between gap-2">
       <div className="flex items-center gap-2">
         <Avatar
-          src={data?.iconUrl || STATIC_TOKENS_MAP[data?.symbol] || ""}
+          src={
+            data?.iconUrl || STATIC_TOKENS_MAP[data?.type || ""]?.iconUrl || ""
+          }
           alt={data?.name}
           className="w-5 h-5"
         />
         <span className="truncate">{data.symbol}</span>
       </div>
-      <TextAmt number={formatBalance(item.totalBalance, data?.decimals ?? 9)} />
+      <TextAmt number={formatBalance(item.totalBalance, data?.decimals ?? 0)} />
     </div>
   );
 }

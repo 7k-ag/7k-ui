@@ -4,6 +4,7 @@ import { ReactComponent as ICExport } from "./export.svg";
 import { ReactComponent as ICFrame } from "./frame.svg";
 import { ReactComponent as ICPowerOff } from "./power-off.svg";
 import { ReactComponent as ICRefresh } from "./refresh.svg";
+import { ReactComponent as ICSearch } from "./search.svg";
 import { ReactComponent as ICWallet } from "./wallet.svg";
 
 export {
@@ -13,5 +14,6 @@ export {
   ICFrame,
   ICPowerOff,
   ICRefresh,
+  ICSearch,
   ICWallet,
 };

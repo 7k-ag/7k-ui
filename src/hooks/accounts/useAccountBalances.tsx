@@ -1,4 +1,6 @@
+import { normalizeTokenId } from "@/utils/token";
 import { useCurrentAccount, useSuiClientQuery } from "@mysten/dapp-kit";
+import { CoinBalance } from "@mysten/sui.js/client";
 import BigNumber from "bignumber.js";
 import { useMemo } from "react";
 
@@ -14,19 +16,22 @@ const useAccountBalances = () => {
     },
   );
 
-  const balances = useMemo(() => {
-    return data?.filter((token) =>
-      new BigNumber(token.totalBalance).isGreaterThan(0),
-    );
+  const balances: CoinBalance[] | undefined = useMemo(() => {
+    return data
+      ?.filter((token) => new BigNumber(token.totalBalance).isGreaterThan(0))
+      ?.map((token) => ({
+        ...token,
+        coinType: normalizeTokenId(token.coinType),
+      }));
   }, [data]);
 
   const balancesObj = useMemo(() => {
     return balances?.reduce(
       (acc, token) => {
-        acc[token.coinType] = token;
+        acc[token.coinType] = token.totalBalance;
         return acc;
       },
-      {} as Record<string, any>,
+      {} as Record<string, string>,
     );
   }, [balances]);
 

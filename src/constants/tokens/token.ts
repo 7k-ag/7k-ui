@@ -64,11 +64,11 @@ export const USDC_TOKEN: StaticToken = {
   verified: true,
 };
 
-export const DEFAULT_AG_TOKENS = {
+export const DEFAULT_SWAP_TOKENS = {
   IN: SUI_TOKEN,
   OUT: USDC_TOKEN,
 };
 
-export const SUI_ID = "0x2::sui::SUI";
+export const SUI_SHORT_ID = "0x2::sui::SUI";
 
-export const SUI_AG_ID = SUI_TOKEN.type;
+export const SUI_LONG_ID = SUI_TOKEN.type;
