@@ -11,7 +11,7 @@ function TokenBalances() {
 
   return (
     <VList
-      style={{ height: 160, marginRight: -16, paddingRight: 16 }}
+      style={{ height: 200, marginRight: -16, paddingRight: 16 }}
       className="vlist"
     >
       {balances.map((token) => (

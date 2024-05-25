@@ -23,10 +23,12 @@ const useSearchTokens = (searchTerm: string) => {
   });
 
   const formattedData: StaticToken[] =
-    data?.content.map((token) => ({
-      ...token,
-      type: normalizeTokenId(token.type),
-    })) || [];
+    data?.content
+      .filter((token) => !token.scamMessage && !token.creatorScamMessage)
+      .map((token) => ({
+        ...token,
+        type: normalizeTokenId(token.type),
+      })) || [];
 
   return {
     data: formattedData,

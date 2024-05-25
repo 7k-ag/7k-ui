@@ -45,7 +45,7 @@ function AccountPopover({ currentAccount }: Props) {
                 },
                 open: { scale: 1, opacity: 1, y: 0 },
               }}
-              className="flex flex-col gap-6 p-6 w-[19.5rem] max-w-full rounded-3xl backdrop-blur-2xl bg-[#252734]/60"
+              className="flex flex-col gap-6 p-6 w-[23.75rem] max-w-full rounded-3xl backdrop-blur-2xl bg-[#252734]/60"
             >
               <WalletInfo currentAccount={currentAccount} />
             </m.div>

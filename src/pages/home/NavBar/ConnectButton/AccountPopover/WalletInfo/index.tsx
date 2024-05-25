@@ -1,7 +1,6 @@
 import { ICCopy, ICExport, ICPowerOff } from "@/assets/icons";
 import CopyBtn from "@/components/CopyBtn";
 import ExplorerAccountLink from "@/components/ExplorerLink/ExplorerAccountLink";
-import { ScrollArea, ScrollBar } from "@/components/UI/ScrollArea";
 import { useDisconnectWallet } from "@mysten/dapp-kit";
 import { formatAddress } from "@mysten/sui.js/utils";
 import type { WalletAccount } from "@mysten/wallet-standard";
@@ -33,10 +32,7 @@ function WalletInfo({ currentAccount }: Props) {
       </div>
       <div className="flex flex-col gap-4 p-4 rounded-[0.625rem] bg-[#252734] text-[#A8A8C7]">
         <div className="text-sm h-6">Balances</div>
-        <ScrollArea className="h-40 -mr-2 pr-2">
-          <TokenBalances />
-          <ScrollBar className="w-1.5" />
-        </ScrollArea>
+        <TokenBalances />
       </div>
     </>
   );

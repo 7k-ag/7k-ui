@@ -16,7 +16,6 @@ import { StaticToken } from "@/constants/tokens/staticTokens";
 import Input from "@/components/UI/Input";
 import { TokenBalance } from "@/types/token";
 import { DEFAULT_AG_TOKENS } from "@/constants/tokens/defaultAgTokens";
-import { STATIC_TOKENS_MAP } from "@/constants/tokens/staticTokensMap";
 import uniqBy from "lodash/uniqBy";
 import { VList } from "virtua";
 import TokenItem from "./TokenItem";
@@ -24,6 +23,7 @@ import useSearchTokens from "@/hooks/tokens/useSearchTokens";
 import { Skeleton } from "@/components/UI/Skeleton";
 import Repeat from "@/components/UI/Repeat";
 import EmptyData from "@/components/EmptyData/EmptyData";
+import { getStaticTokenById } from "@/utils/token";
 
 type Props = {
   token: StaticToken | undefined;
@@ -55,8 +55,9 @@ function SelectTokenModal({
       // tokens from account balances
       if (accountBalancesObj) {
         Object.keys(accountBalancesObj).forEach((coinType) => {
-          if (supportedTokenSet.has(coinType) && STATIC_TOKENS_MAP[coinType]) {
-            tokens.push(STATIC_TOKENS_MAP[coinType]);
+          const token = getStaticTokenById(coinType);
+          if (supportedTokenSet.has(coinType) && token) {
+            tokens.push(token);
           }
         });
       }
@@ -112,14 +113,14 @@ function SelectTokenModal({
       return (
         <VList style={{ height: 320 }} className="vlist">
           <Repeat count={10}>
-            <Skeleton className="p-4 bg-[#1C1E2C] rounded-xl text-sm/normal mb-1" />
+            <Skeleton className="h-13 p-4 bg-[#1C1E2C] rounded-xl text-sm/normal mb-1" />
           </Repeat>
         </VList>
       );
     }
 
     if (!tokenBalances.length) {
-      return <EmptyData title="No tokens found" />;
+      return <EmptyData title="No coins found" />;
     }
 
     return (

@@ -1,8 +1,11 @@
+import { ICExport } from "@/assets/icons";
 import Avatar from "@/components/Avatar";
+import ExplorerTokenLink from "@/components/ExplorerLink/ExplorerTokenLink";
 import TextAmt from "@/components/TextAmt";
-import { STATIC_TOKENS_MAP } from "@/constants/tokens/staticTokensMap";
 import { TokenBalance } from "@/types/token";
 import { formatBalance } from "@/utils/number";
+import { getStaticTokenById } from "@/utils/token";
+import { formatAddress } from "@mysten/sui.js/utils";
 
 type Props = {
   item: TokenBalance;
@@ -19,7 +22,7 @@ function TokenItem({ item, onClick }: Props) {
         <Avatar
           src={
             item.token.iconUrl ||
-            STATIC_TOKENS_MAP[item.token.type]?.iconUrl ||
+            getStaticTokenById(item.token.type)?.iconUrl ||
             ""
           }
           alt={item.token.symbol}
@@ -32,10 +35,19 @@ function TokenItem({ item, onClick }: Props) {
           </span>
         </div>
       </div>
-      <TextAmt
-        number={formatBalance(item.balance, item.token.decimals ?? 0)}
-        className="text-[#A8A8C7]"
-      />
+      <div className="flex flex-col justify-end gap-1 items-end">
+        <TextAmt
+          number={formatBalance(item.balance, item.token.decimals ?? 0)}
+        />
+        <ExplorerTokenLink
+          tokenId={item.token.type}
+          className="flex items-center gap-1 truncate text-2xs/none font-normal text-[#A8A8C7] hover:text-[#85FF99]"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <span>{formatAddress(item.token.type)}</span>
+          <ICExport className="w-2.5 aspect-square" />
+        </ExplorerTokenLink>
+      </div>
     </button>
   );
 }
