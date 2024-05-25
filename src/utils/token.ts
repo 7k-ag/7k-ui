@@ -15,5 +15,5 @@ export function checkIsSui(tokenId: string) {
 }
 
 export function getStaticTokenById(tokenId: string): StaticToken | undefined {
-  return STATIC_TOKENS_MAP[denormalizeTokenId(tokenId)];
+  return STATIC_TOKENS_MAP[tokenId];
 }

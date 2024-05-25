@@ -33,6 +33,39 @@ export const STATIC_TOKENS_MAP: Record<string, StaticToken> = {
     bridge: false,
     verified: true,
   },
+  "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI":
+    {
+      type: "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+      objectId:
+        "0x9258181f5ceac8dbffb7030890243caed69a9599d2886d957a9cb7656af3bdb3",
+      name: "Sui",
+      supply: 10000000000,
+      supplyInUsd: 10580000000,
+      tokenPrice: 1.058,
+      dominance: 0.0913404965,
+      circulatingSupply: 2339196965.73389,
+      marketCap: 2474870389.7464557,
+      totalVolume: 105436924,
+      maxSupply: 10000000000,
+      fdv: 10580000000,
+      holders: 8154917,
+      denom: "SUI",
+      packageId:
+        "0x0000000000000000000000000000000000000000000000000000000000000002",
+      createTimestamp: 1681318800000,
+      creator:
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      creatorName: null,
+      creatorImg: null,
+      creatorScamMessage: null,
+      scamMessage: null,
+      decimals: 9,
+      symbol: "SUI",
+      iconUrl: "https://strapi-dev.scand.app/uploads/sui_c07df05f00.png",
+      description: "",
+      bridge: false,
+      verified: true,
+    },
   "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN":
     {
       type: "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",

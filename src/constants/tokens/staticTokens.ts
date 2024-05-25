@@ -30,7 +30,7 @@ export interface StaticToken {
 
 export const STATIC_TOKENS: StaticToken[] = [
   {
-    type: "0x2::sui::SUI",
+    type: "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
     objectId:
       "0x9258181f5ceac8dbffb7030890243caed69a9599d2886d957a9cb7656af3bdb3",
     name: "Sui",
