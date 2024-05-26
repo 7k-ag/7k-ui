@@ -307,7 +307,7 @@ function SwapForm() {
   ]);
 
   return (
-    <div className="flex flex-col gap-2 p-2 rounded-3xl w-[24rem] max-w-full">
+    <div className="flex flex-col gap-2 p-2 rounded-3xl max-w-[24rem] w-full">
       <div className="flex items-center justify-between gap-2.5">
         <div className="flex items-center gap-4 px-2">
           <span className="text-sm/none font-semibold">Swap</span>

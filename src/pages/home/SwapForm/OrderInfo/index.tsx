@@ -157,9 +157,18 @@ function OrderInfo({ tokenIn, tokenOut, agSorData }: Props) {
               <div className="flex flex-col gap-4 px-6 pb-6 pt-0">
                 <div className="h-px bg-[#707585]" />
                 <OrderItem
-                  label="Price"
+                  label={
+                    <span
+                      className={tw(isPriceImpactTooHigh && "text-[#F24DB0]")}
+                    >
+                      Price
+                    </span>
+                  }
                   value={
-                    <PriceButton onClick={handleChangePriceMode}>
+                    <PriceButton
+                      onClick={handleChangePriceMode}
+                      className={tw(isPriceImpactTooHigh && "text-[#F24DB0]")}
+                    >
                       {priceElement}
                     </PriceButton>
                   }
