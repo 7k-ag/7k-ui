@@ -66,13 +66,13 @@ function OrderInfo({ tokenIn, tokenOut, agSorData }: Props) {
   const priceElement = useMemo(() => {
     return priceMode === "in-out" ? (
       <span>
-        1 {tokenIn.symbol} = <TextAmt number={agSorData?.effectivePrice} />{" "}
-        {tokenOut.symbol}
+        1 {tokenIn.symbol} ={" "}
+        <TextAmt number={agSorData?.effectivePriceReserved} /> {tokenOut.symbol}
       </span>
     ) : (
       <span>
-        1 {tokenOut.symbol} ={" "}
-        <TextAmt number={agSorData?.effectivePriceReserved} /> {tokenIn.symbol}
+        1 {tokenOut.symbol} = <TextAmt number={agSorData?.effectivePrice} />{" "}
+        {tokenIn.symbol}
       </span>
     );
   }, [
@@ -123,7 +123,13 @@ function OrderInfo({ tokenIn, tokenOut, agSorData }: Props) {
         </PriceButton>
       </div>
     );
-  }, [openAccordion, priceElement, handleChangePriceMode]);
+  }, [
+    openAccordion,
+    isPriceImpactTooHigh,
+    priceImpactPct,
+    priceElement,
+    handleChangePriceMode,
+  ]);
 
   if (!agSorData) {
     return null;

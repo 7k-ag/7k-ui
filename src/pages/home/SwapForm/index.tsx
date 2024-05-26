@@ -125,7 +125,7 @@ function SwapForm() {
       );
     }
     return new BigNumber(0);
-  }, [accountBalancesObj, tokenInId]);
+  }, [accountBalancesObj, tokenInId, tokenIn.decimals]);
 
   const amountOut = useMemo(() => {
     return agSorData?.returnAmount || "0";
@@ -148,13 +148,13 @@ function SwapForm() {
       return new BigNumber(0);
     }
     return new BigNumber(amountIn).multipliedBy(tokenInPrice);
-  }, [tokenIn, tokenOut, amountIn]);
+  }, [amountIn, tokenInPrice]);
   const amountOutUsdValue = useMemo(() => {
     if (!agSorData?.returnAmount) {
       return new BigNumber(0);
     }
     return new BigNumber(agSorData.returnAmount).multipliedBy(tokenOutPrice);
-  }, [tokenIn, tokenOut, agSorData]);
+  }, [agSorData, tokenOutPrice]);
 
   const handleClickBalance = useCallback(() => {
     if (checkIsSui(tokenInId)) {
@@ -162,13 +162,13 @@ function SwapForm() {
       return;
     }
     setAmountIn(tokenInBalance.toString());
-  }, [tokenInBalance]);
+  }, [tokenInBalance, setAmountIn, tokenInId]);
 
   const handleRevertTokens = useCallback(() => {
     setTokenIn(tokenOut);
     setTokenOut(tokenIn);
     setAmountIn("");
-  }, [tokenIn, tokenOut]);
+  }, [tokenIn, tokenOut, setAmountIn, setTokenIn, setTokenOut]);
 
   const currentAccount = useCurrentAccount();
   // const isInsufficientSuiBalance = useMemo(() => {
@@ -304,6 +304,7 @@ function SwapForm() {
     isPriceImpactTooHigh,
     isConfirmSwapAnyway,
     isInvalidAmountOut,
+    handleSwap,
   ]);
 
   return (

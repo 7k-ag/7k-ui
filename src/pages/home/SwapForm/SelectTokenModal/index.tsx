@@ -88,7 +88,13 @@ function SelectTokenModal({
       .sort((a, b) => {
         return Number(b.balance) - Number(a.balance);
       });
-  }, [debounceSearchTerm, accountBalancesObj, supportedTokenSet]);
+  }, [
+    debounceSearchTerm,
+    searchedTokens,
+    accountBalancesObj,
+    supportedTokenSet,
+    pivotTokenId,
+  ]);
 
   const trigger = useMemo(
     () => (
@@ -137,7 +143,7 @@ function SelectTokenModal({
         ))}
       </VList>
     );
-  }, [searchTerm, isLoading, tokenBalances]);
+  }, [isLoading, tokenBalances, searchTerm, setToken]);
 
   const content = useMemo(
     () => (
@@ -166,7 +172,7 @@ function SelectTokenModal({
         </div>
       </div>
     ),
-    [searchTerm, tokenBalances],
+    [searchTerm, tokenList],
   );
 
   if (isMobile) {
