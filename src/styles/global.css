@@ -32,6 +32,24 @@
   src: url("../assets/fonts/cyberway-riders/CyberwayRiders.otf");
 }
 
+@font-face {
+  font-family: "SamsungSharpSans";
+  font-weight: 700;
+  src: url("../assets/fonts/samsung/samsungsharpsans-bold.otf");
+}
+
+@font-face {
+  font-family: "SamsungSharpSans";
+  font-weight: 500;
+  src: url("../assets/fonts/samsung/samsungsharpsans-medium.otf");
+}
+
+@font-face {
+  font-family: "SamsungSharpSans";
+  font-weight: 400;
+  src: url("../assets/fonts/samsung/samsungsharpsans.otf");
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

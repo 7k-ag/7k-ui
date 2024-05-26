@@ -30,7 +30,7 @@ function WalletInfo({ currentAccount }: Props) {
           </button>
         </div>
       </div>
-      <div className="flex flex-col gap-4 p-4 rounded-[0.625rem] bg-[#252734] text-[#A8A8C7]">
+      <div className="flex flex-col gap-4 p-4 rounded-[0.625rem] bg-[#252734] text-gray-100">
         <div className="text-sm h-6">Balances</div>
         <TokenBalances />
       </div>

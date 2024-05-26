@@ -30,7 +30,7 @@ function TokenItem({ item, onClick }: Props) {
         />
         <div className="flex flex-col items-start gap-1">
           <span className="truncate">{item.token.symbol}</span>
-          <span className="truncate text-2xs/none font-normal text-[#A8A8C7]">
+          <span className="truncate text-2xs/none font-normal text-gray-100">
             {item.token.name}
           </span>
         </div>
@@ -41,7 +41,7 @@ function TokenItem({ item, onClick }: Props) {
         />
         <ExplorerTokenLink
           tokenId={item.token.type}
-          className="flex items-center gap-1 truncate text-2xs/none font-normal text-[#A8A8C7] hover:text-[#85FF99]"
+          className="flex items-center gap-1 truncate text-2xs/none font-normal text-gray-100 hover:text-[#85FF99]"
           onClick={(e) => e.stopPropagation()}
         >
           <span>{formatAddress(item.token.type)}</span>

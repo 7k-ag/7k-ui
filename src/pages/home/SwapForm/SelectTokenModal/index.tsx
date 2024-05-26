@@ -145,7 +145,7 @@ function SelectTokenModal({
         <Input
           placeholder="Search coin name, type or package id"
           prefixSlot={
-            <ICSearch className="shrink-0 w-4 h-auto text-[#A8A8C7]" />
+            <ICSearch className="shrink-0 w-4 h-auto text-gray-100" />
           }
           postfixSlot={
             <button

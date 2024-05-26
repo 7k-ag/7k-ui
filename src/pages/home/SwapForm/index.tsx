@@ -23,6 +23,61 @@ import { MINIMUM_SUI_AMT } from "@/constants/amount";
 import useAgSor from "@/hooks/aggregator/useAgSor";
 import useTokenMetadata from "@/hooks/tokens/useTokenMetadata";
 import { Checkbox } from "@/components/UI/Checkbox";
+import OrderInfo from "./OrderInfo";
+// import { SorSwapResponse } from "@/types/swapInfo";
+
+// const MOCK_AG_SOR_DATA: SorSwapResponse = {
+//   tokenAddresses: ["WEGLD-bd4d79", "ASH-a642d1"],
+//   swaps: [
+//     {
+//       poolId: "erd1qqqqqqqqqqqqqpgqp5d4x3d263x4alnapwafwujch5xqmvyq2jpsk2xhsy",
+//       assetInIndex: 0,
+//       assetOutIndex: 1,
+//       amount: "189657544182779182",
+//       returnAmount: "396480789950869663143",
+//       assetIn: "WEGLD-bd4d79",
+//       assetOut: "ASH-a642d1",
+//       functionName: "swapTokensFixedInput",
+//       arguments: ["QVNILWE2NDJkMQ==", "AQ=="],
+//     },
+//   ],
+//   swapAmount: "0.189657544182779182",
+//   returnAmount: "396.480789950869663143",
+//   swapAmountWithDecimal: "189657544182779182",
+//   returnAmountWithDecimal: "396480789950869663143",
+//   tokenIn: "WEGLD-bd4d79",
+//   tokenOut: "ASH-a642d1",
+//   marketSp: "0.000478348769163039",
+//   routes: [
+//     {
+//       hops: [
+//         {
+//           poolId:
+//             "erd1qqqqqqqqqqqqqpgqp5d4x3d263x4alnapwafwujch5xqmvyq2jpsk2xhsy",
+//           pool: {
+//             allTokens: [
+//               { address: "ASH-a642d1", decimal: 18 },
+//               { address: "WEGLD-bd4d79", decimal: 18 },
+//             ],
+//             type: "xexchange",
+//           },
+//           tokenIn: "WEGLD-bd4d79",
+//           tokenInAmount: "0.189657544182779182",
+//           tokenOut: "ASH-a642d1",
+//           tokenOutAmount: "396.480789950869663143",
+//         },
+//       ],
+//       tokenIn: "WEGLD-bd4d79",
+//       tokenInAmount: "0.189657544182779182",
+//       tokenOut: "ASH-a642d1",
+//       tokenOutAmount: "396.480789950869663143",
+//     },
+//   ],
+//   effectivePrice: 0.00047835241703962704,
+//   effectivePriceReserved: 2090.508931027643,
+//   priceImpact: 7.62591858662255e-6,
+//   warning: "None",
+// };
 
 function SwapForm() {
   const [tokenIn, setTokenIn] = useAtom(agTokenInAtom);
@@ -286,27 +341,27 @@ function SwapForm() {
             <TextAmt
               number={amountInUsdValue}
               className={tw(
-                "text-[#A8A8C7] text-2xs font-light",
+                "text-gray-100 text-2xs font-light",
                 (!amountIn || isLoadingTokenInData) && "invisible",
               )}
               prefix="~ $"
             />
             {tokenInBalance.isGreaterThan(0) ? (
               <button className="font-normal" onClick={handleClickBalance}>
-                <span className="text-[#A8A8C7]">Balance: </span>
+                <span className="text-gray-100">Balance: </span>
                 <TextAmt number={tokenInBalance} className="text-[#85FF99]" />
               </button>
             ) : (
               <span className="font-normal">
-                <span className="text-[#A8A8C7]">Balance: </span>
-                <span className="text-[#A8A8C7]">0</span>
+                <span className="text-gray-100">Balance: </span>
+                <span className="text-gray-100">0</span>
               </span>
             )}
           </div>
         </div>
 
         <button
-          className="flex items-center justify-center m-auto p-1 bg-[#252734] text-[#A8A8C7] rounded-lg -my-3 z-[2]"
+          className="flex items-center justify-center m-auto p-1 bg-[#252734] text-gray-100 rounded-lg -my-3 z-[2]"
           onClick={handleRevertTokens}
         >
           <ICFrame className="w-4 aspect-square" />
@@ -331,20 +386,27 @@ function SwapForm() {
             <TextAmt
               number={amountOutUsdValue}
               className={tw(
-                "text-[#A8A8C7] text-2xs font-light",
+                "text-gray-100 text-2xs font-light",
                 isLoadingTokenOutData && "invisible",
               )}
               prefix="~ $"
             />
             <span className="font-normal invisible">
-              <span className="text-[#A8A8C7]">Balance: </span>
-              <span className="text-[#A8A8C7]">0</span>
+              <span className="text-gray-100">Balance: </span>
+              <span className="text-gray-100">0</span>
             </span>
           </div>
         </div>
       </div>
 
       {actionButton}
+
+      <OrderInfo
+        tokenIn={tokenIn}
+        tokenOut={tokenOut}
+        agSorData={agSorData}
+        // agSorData={agSorData || MOCK_AG_SOR_DATA}
+      />
     </div>
   );
 }

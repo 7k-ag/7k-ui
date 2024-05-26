@@ -74,6 +74,7 @@ export default {
       fontFamily: {
         outfit: ["Outfit", ...defaultTheme.fontFamily.sans],
         cyberwayRiders: ["CyberwayRiders", ...defaultTheme.fontFamily.sans],
+        samsung: ["SamsungSharpSans", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         blueviolet: "#9747ff",
