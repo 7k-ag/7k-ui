@@ -188,7 +188,7 @@ function OrderInfo({ tokenIn, tokenOut, agSorData }: Props) {
                         <TooltipTrigger className="underline">
                           Price Impact
                         </TooltipTrigger>
-                        <TooltipContent className="max-w-[14rem]">
+                        <TooltipContent className="w-full max-w-[16.5rem]">
                           Making a trade shifts the ratio of tokens in the
                           pools, causing this change in price per token.
                         </TooltipContent>
@@ -213,7 +213,7 @@ function OrderInfo({ tokenIn, tokenOut, agSorData }: Props) {
                         <TooltipTrigger className="underline">
                           Minimum Received
                         </TooltipTrigger>
-                        <TooltipContent className="max-w-[15.75rem]">
+                        <TooltipContent className="w-full max-w-[16.5rem]">
                           The minimum amount you would get after subtracting
                           fees and maximum slippage being reached.
                         </TooltipContent>
