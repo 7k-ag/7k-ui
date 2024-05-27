@@ -1,6 +1,6 @@
 import InputCurrency from "@/components/InputCurrency";
 import RefreshButton from "./RefreshButton";
-import SlippagePopover from "./SlippagePopover";
+import SlippageDropdown from "./SlippageDropdown";
 import SelectTokenModal from "./SelectTokenModal";
 import { ICFrame, ICWallet } from "@/assets/icons";
 import ImgSwap from "@/assets/images/swap.png";
@@ -24,65 +24,207 @@ import useAgSor from "@/hooks/aggregator/useAgSor";
 import useTokenMetadata from "@/hooks/tokens/useTokenMetadata";
 import { Checkbox } from "@/components/UI/Checkbox";
 import OrderInfo from "./OrderInfo";
-// import { SorSwapResponse } from "@/types/swapInfo";
+import { SorSwapResponse } from "@/types/swapInfo";
+import { useDebounce } from "use-debounce";
 
-// const MOCK_AG_SOR_DATA: SorSwapResponse = {
-//   tokenAddresses: ["WEGLD-bd4d79", "ASH-a642d1"],
-//   swaps: [
-//     {
-//       poolId: "erd1qqqqqqqqqqqqqpgqp5d4x3d263x4alnapwafwujch5xqmvyq2jpsk2xhsy",
-//       assetInIndex: 0,
-//       assetOutIndex: 1,
-//       amount: "189657544182779182",
-//       returnAmount: "396480789950869663143",
-//       assetIn: "WEGLD-bd4d79",
-//       assetOut: "ASH-a642d1",
-//       functionName: "swapTokensFixedInput",
-//       arguments: ["QVNILWE2NDJkMQ==", "AQ=="],
-//     },
-//   ],
-//   swapAmount: "0.189657544182779182",
-//   returnAmount: "396.480789950869663143",
-//   swapAmountWithDecimal: "189657544182779182",
-//   returnAmountWithDecimal: "396480789950869663143",
-//   tokenIn: "WEGLD-bd4d79",
-//   tokenOut: "ASH-a642d1",
-//   marketSp: "0.000478348769163039",
-//   routes: [
-//     {
-//       hops: [
-//         {
-//           poolId:
-//             "erd1qqqqqqqqqqqqqpgqp5d4x3d263x4alnapwafwujch5xqmvyq2jpsk2xhsy",
-//           pool: {
-//             allTokens: [
-//               { address: "ASH-a642d1", decimal: 18 },
-//               { address: "WEGLD-bd4d79", decimal: 18 },
-//             ],
-//             type: "xexchange",
-//           },
-//           tokenIn: "WEGLD-bd4d79",
-//           tokenInAmount: "0.189657544182779182",
-//           tokenOut: "ASH-a642d1",
-//           tokenOutAmount: "396.480789950869663143",
-//         },
-//       ],
-//       tokenIn: "WEGLD-bd4d79",
-//       tokenInAmount: "0.189657544182779182",
-//       tokenOut: "ASH-a642d1",
-//       tokenOutAmount: "396.480789950869663143",
-//     },
-//   ],
-//   effectivePrice: 0.00047835241703962704,
-//   effectivePriceReserved: 2090.508931027643,
-//   priceImpact: 7.62591858662255e-6,
-//   warning: "None",
-// };
+const MOCK_AG_SOR_DATA: SorSwapResponse = {
+  tokenAddresses: [
+    "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+    "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+    "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+    "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
+    "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
+  ],
+  swaps: [
+    {
+      poolId:
+        "0x0254747f5ca059a1972cd7f6016485d51392a3fde608107b93bbaebea550f703",
+      assetInIndex: 0,
+      assetOutIndex: 1,
+      amount: "6670391650",
+      returnAmount: "55874364188",
+      assetIn:
+        "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+      assetOut:
+        "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+      functionName: "delegate",
+      arguments: [],
+    },
+    {
+      poolId:
+        "0x3ec8401520022aac67935188eb1f82c13cbbc949ab04692e5b62445d89b61c9f",
+      assetInIndex: 1,
+      assetOutIndex: 2,
+      amount: "0",
+      returnAmount: "64361660195",
+      assetIn:
+        "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+      assetOut:
+        "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+      functionName: "delegate",
+      arguments: [],
+    },
+    {
+      poolId:
+        "0x81f6bdb7f443b2a55de8554d2d694b7666069a481526a1ff0c91775265ac0fc1",
+      assetInIndex: 2,
+      assetOutIndex: 3,
+      amount: "0",
+      returnAmount: "178607",
+      assetIn:
+        "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+      assetOut:
+        "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
+      functionName: "delegate",
+      arguments: [],
+    },
+    {
+      poolId:
+        "0x43ca1a6de20d7feabcaa460ac3798a6fdc754d3a83b49dff93221612c1370dcc",
+      assetInIndex: 3,
+      assetOutIndex: 4,
+      amount: "0",
+      returnAmount: "7003804",
+      assetIn:
+        "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
+      assetOut:
+        "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
+      functionName: "delegate",
+      arguments: [],
+    },
+  ],
+  swapAmount: "6.67039165",
+  returnAmount: "7.003804",
+  swapAmountWithDecimal: "6670391650",
+  returnAmountWithDecimal: "7003804",
+  tokenIn:
+    "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+  tokenOut:
+    "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
+  marketSp: "0.961114817412351909",
+  routes: [
+    {
+      hops: [
+        {
+          poolId:
+            "0x0254747f5ca059a1972cd7f6016485d51392a3fde608107b93bbaebea550f703",
+          pool: {
+            allTokens: [
+              {
+                address:
+                  "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+                decimal: 9,
+              },
+              {
+                address:
+                  "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+                decimal: 9,
+              },
+            ],
+            type: "cetusv2",
+          },
+          tokenIn:
+            "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+          tokenInAmount: "6.67039165",
+          tokenOut:
+            "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+          tokenOutAmount: "55.874364188",
+        },
+        {
+          poolId:
+            "0x3ec8401520022aac67935188eb1f82c13cbbc949ab04692e5b62445d89b61c9f",
+          pool: {
+            allTokens: [
+              {
+                address:
+                  "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+                decimal: 9,
+              },
+              {
+                address:
+                  "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+                decimal: 9,
+              },
+            ],
+            type: "cetusv2",
+          },
+          tokenIn:
+            "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+          tokenInAmount: "55.874364188",
+          tokenOut:
+            "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+          tokenOutAmount: "64.361660195",
+        },
+        {
+          poolId:
+            "0x81f6bdb7f443b2a55de8554d2d694b7666069a481526a1ff0c91775265ac0fc1",
+          pool: {
+            allTokens: [
+              {
+                address:
+                  "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
+                decimal: 8,
+              },
+              {
+                address:
+                  "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+                decimal: 9,
+              },
+            ],
+            type: "cetusv2",
+          },
+          tokenIn:
+            "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+          tokenInAmount: "64.361660195",
+          tokenOut:
+            "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
+          tokenOutAmount: "0.00178607",
+        },
+        {
+          poolId:
+            "0x43ca1a6de20d7feabcaa460ac3798a6fdc754d3a83b49dff93221612c1370dcc",
+          pool: {
+            allTokens: [
+              {
+                address:
+                  "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
+                decimal: 8,
+              },
+              {
+                address:
+                  "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
+                decimal: 6,
+              },
+            ],
+            type: "kriya",
+          },
+          tokenIn:
+            "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
+          tokenInAmount: "0.00178607",
+          tokenOut:
+            "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
+          tokenOutAmount: "7.003804",
+        },
+      ],
+      tokenIn:
+        "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+      tokenInAmount: "6.67039165",
+      tokenOut:
+        "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
+      tokenOutAmount: "7.003804",
+    },
+  ],
+  effectivePrice: 0.9523955339127137,
+  effectivePriceReserved: 1.0499839241073647,
+  priceImpact: 0.0,
+  warning: "TokenNotHasPrice",
+};
 
 function SwapForm() {
   const [tokenIn, setTokenIn] = useAtom(agTokenInAtom);
   const [tokenOut, setTokenOut] = useAtom(agTokenOutAtom);
   const [amountIn, setAmountIn] = useAtom(agAmountInAtom);
+  const [amountInDebounce] = useDebounce(amountIn, 500);
 
   const tokenInId = useMemo(() => tokenIn?.type, [tokenIn]);
   const tokenOutId = useMemo(() => tokenOut?.type, [tokenOut]);
@@ -92,16 +234,16 @@ function SwapForm() {
       !!tokenInId &&
       !!tokenOutId &&
       tokenInId !== tokenOutId &&
-      !!amountIn &&
-      new BigNumber(amountIn).gt(0)
+      !!amountInDebounce &&
+      new BigNumber(amountInDebounce).gt(0)
     );
-  }, [tokenInId, tokenOutId, amountIn]);
+  }, [tokenInId, tokenOutId, amountInDebounce]);
 
   const { data: agSorData, refetch: refetchAgSor } = useAgSor({
     tokenInId: tokenInId,
     tokenOutId: tokenOutId,
-    amountIn: amountIn
-      ? formatRawBalance(amountIn, tokenIn?.decimals).toString()
+    amountIn: amountInDebounce
+      ? formatRawBalance(amountInDebounce, tokenIn?.decimals).toString()
       : "",
     enabled: enabledAgSor,
     refetchInterval: 6000,
@@ -315,7 +457,7 @@ function SwapForm() {
         </div>
         <div className="flex items-center gap-2">
           <RefreshButton onClick={refetchAgSor} disabled={!enabledAgSor} />
-          <SlippagePopover />
+          <SlippageDropdown />
         </div>
       </div>
 
@@ -405,8 +547,8 @@ function SwapForm() {
       <OrderInfo
         tokenIn={tokenIn}
         tokenOut={tokenOut}
-        agSorData={agSorData}
-        // agSorData={agSorData || MOCK_AG_SOR_DATA}
+        // agSorData={agSorData}
+        agSorData={agSorData || MOCK_AG_SOR_DATA}
       />
     </div>
   );

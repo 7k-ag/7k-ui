@@ -21,7 +21,7 @@ function TokenItem({ item }: Props) {
   }
 
   return (
-    <div className="h-12 flex items-center justify-between gap-2 mb-1">
+    <div className="h-12 flex items-center justify-between gap-2 mb-2 sm:mb-1 rounded-xl bg-[#2B2E3C] sm:bg-transparent p-2 sm:p-0">
       <div className="flex items-center gap-2">
         <Avatar
           src={

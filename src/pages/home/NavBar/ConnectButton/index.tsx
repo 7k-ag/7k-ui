@@ -1,6 +1,6 @@
 import { ConnectModal, useCurrentAccount } from "@mysten/dapp-kit";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import AccountPopover from "./AccountPopover";
+import AccountDropdown from "./AccountDropdown";
 import { ICWallet } from "@/assets/icons";
 
 type Props = {
@@ -13,7 +13,7 @@ function ConnectButton({
 }: Props) {
   const currentAccount = useCurrentAccount();
   return currentAccount ? (
-    <AccountPopover currentAccount={currentAccount} />
+    <AccountDropdown currentAccount={currentAccount} />
   ) : (
     <ConnectModal
       trigger={

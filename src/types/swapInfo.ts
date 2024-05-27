@@ -22,7 +22,7 @@ export type SorHop = {
 };
 export type SorRoute = {
   hops: SorHop[];
-  share: number;
+  share?: number;
   tokenIn: string;
   tokenInAmount: string;
   tokenOut: string;
@@ -35,8 +35,8 @@ export type SorSwapResponse = {
   swapAmount: string;
   returnAmount: string;
   returnAmountWithDecimal: string;
-  returnAmountConsiderGasFees: string;
-  returnAmountWithoutSwapFees: string;
+  returnAmountConsiderGasFees?: string;
+  returnAmountWithoutSwapFees?: string;
   swapAmountWithDecimal: string;
   tokenAddresses: string[];
   tokenIn: string;
@@ -44,4 +44,5 @@ export type SorSwapResponse = {
   marketSp: string;
   routes?: SorRoute[];
   swaps: SorSwap[];
+  warning: string;
 };

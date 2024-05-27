@@ -10,10 +10,7 @@ function TokenBalances() {
   }
 
   return (
-    <VList
-      style={{ height: 200, marginRight: -16, paddingRight: 16 }}
-      className="vlist"
-    >
+    <VList style={{ height: 200 }} className="vlist">
       {balances.map((token) => (
         <TokenItem key={token.coinType} item={token} />
       ))}

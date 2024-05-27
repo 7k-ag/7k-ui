@@ -20,6 +20,7 @@ import { useAtomValue } from "jotai";
 import { agSlippageAtom } from "@/atoms/aggregator.atom";
 import OrderItem from "./OrderItem";
 import PriceButton from "./PriceButton";
+import BigNumber from "bignumber.js";
 
 type PriceMode = "in-out" | "out-in";
 
@@ -34,7 +35,7 @@ function OrderInfo({ tokenIn, tokenOut, agSorData }: Props) {
   const [priceMode, setPriceMode] = useState<PriceMode>("in-out");
 
   const amountOut = useMemo(() => {
-    return agSorData?.returnAmount || 0;
+    return new BigNumber(agSorData?.returnAmount || 0);
   }, [agSorData?.returnAmount]);
 
   const priceImpactPct = useMemo(() => {

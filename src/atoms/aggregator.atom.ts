@@ -8,4 +8,4 @@ export const agTokenOutAtom = atom(DEFAULT_SWAP_TOKENS.OUT);
 
 export const agAmountInAtom = atom("");
 
-export const agSlippageAtom = atom(new Percent(500, 100_000)); // 0.5%
+export const agSlippageAtom = atom(new Percent(1_000, 100_000)); // 1%

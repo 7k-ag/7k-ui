@@ -119,7 +119,7 @@ function SelectTokenModal({
       return (
         <VList style={{ height: 320 }} className="vlist">
           <Repeat count={10}>
-            <Skeleton className="h-13 p-4 bg-[#1C1E2C] rounded-xl text-sm/normal mb-1" />
+            <Skeleton className="h-12 p-4 bg-[#1C1E2C] rounded-xl text-sm/normal mb-1" />
           </Repeat>
         </VList>
       );
@@ -147,15 +147,15 @@ function SelectTokenModal({
 
   const content = useMemo(
     () => (
-      <div className="flex-1 flex flex-col gap-4 p-1 rounded-2xl bg-[#252734] border border-[#373947] backdrop-blur-md shadow-soft-3 shadow-skin-alt dark:shadow-skin-alt/10">
+      <>
         <Input
-          placeholder="Search coin name, type or package id"
+          placeholder="Search coin name, type, package id"
           prefixSlot={
             <ICSearch className="shrink-0 w-4 h-auto text-gray-100" />
           }
           postfixSlot={
             <button
-              className="shrink-0 flex items-center justify-center px-2 py-1 rounded-lg bg-[#373947] font-bold text-sm text-[#FCFBFE]"
+              className="shrink-0 flex items-center justify-center px-2 py-1 rounded-lg bg-[#373947] font-bold text-sm/none text-black-inverted-100"
               onClick={() => setOpen(false)}
             >
               ESC
@@ -170,7 +170,7 @@ function SelectTokenModal({
           <div className="p-2 text-2xl/none">Token List</div>
           {tokenList}
         </div>
-      </div>
+      </>
     ),
     [searchTerm, tokenList],
   );
@@ -186,7 +186,7 @@ function SelectTokenModal({
               side="bottom"
               onOpenChange={setOpen}
               animation={false}
-              className="p-0"
+              className="p-4"
             >
               {content}
             </SheetContent>
@@ -205,7 +205,9 @@ function SelectTokenModal({
             forceMount
             className="shadow-none flex items-start gap-4 p-0 max-w-full md:w-[24rem]"
           >
-            {content}
+            <div className="flex-1 flex flex-col gap-4 p-1 rounded-2xl bg-[#252734] border border-[#373947] backdrop-blur-md shadow-soft-3 shadow-skin-alt dark:shadow-skin-alt/10">
+              {content}
+            </div>
           </DialogContentDefault>
         )}
       </AnimatePresence>
