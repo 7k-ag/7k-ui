@@ -1,7 +1,7 @@
 import { StaticToken } from "@/constants/tokens/staticTokens";
 import BigNumber from "bignumber.js";
 
-export interface TokenBalance {
+export interface TokenAmount {
   token: StaticToken;
-  balance: BigNumber.Value;
+  amount: BigNumber.Value;
 }

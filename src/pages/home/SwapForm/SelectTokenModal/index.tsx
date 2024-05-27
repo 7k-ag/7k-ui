@@ -14,7 +14,7 @@ import { useDebounce } from "use-debounce";
 import useAgTokens from "@/hooks/aggregator/useAgTokens";
 import { StaticToken } from "@/constants/tokens/staticTokens";
 import Input from "@/components/UI/Input";
-import { TokenBalance } from "@/types/token";
+import { TokenAmount } from "@/types/token";
 import { DEFAULT_AG_TOKENS } from "@/constants/tokens/defaultAgTokens";
 import uniqBy from "lodash/uniqBy";
 import { VList } from "virtua";
@@ -47,7 +47,7 @@ function SelectTokenModal({
   const { data: searchedTokens, isLoading } =
     useSearchTokens(debounceSearchTerm);
 
-  const tokenBalances: TokenBalance[] = useMemo(() => {
+  const tokenBalances: TokenAmount[] = useMemo(() => {
     if (!debounceSearchTerm) {
       // default tokens
       let tokens = [...DEFAULT_AG_TOKENS];
@@ -65,13 +65,13 @@ function SelectTokenModal({
       tokens = tokens.filter((token) => token.type !== pivotTokenId);
 
       // format token balances
-      const tokenBalances: TokenBalance[] = tokens
+      const tokenBalances: TokenAmount[] = tokens
         .map((token) => ({
           token,
-          balance: accountBalancesObj?.[token.type] || "0",
+          amount: accountBalancesObj?.[token.type] || "0",
         }))
         .sort((a, b) => {
-          return Number(b.balance) - Number(a.balance);
+          return Number(b.amount) - Number(a.amount);
         });
       return uniqBy(uniqBy(tokenBalances, "token.type"), "token.symbol");
     }
@@ -83,10 +83,10 @@ function SelectTokenModal({
       )
       .map((token) => ({
         token,
-        balance: accountBalancesObj?.[token.type] || "0",
+        amount: accountBalancesObj?.[token.type] || "0",
       }))
       .sort((a, b) => {
-        return Number(b.balance) - Number(a.balance);
+        return Number(b.amount) - Number(a.amount);
       });
   }, [
     debounceSearchTerm,

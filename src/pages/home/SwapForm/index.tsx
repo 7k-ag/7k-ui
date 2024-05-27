@@ -26,6 +26,7 @@ import { Checkbox } from "@/components/UI/Checkbox";
 import OrderInfo from "./OrderInfo";
 import { SorSwapResponse } from "@/types/swapInfo";
 import { useDebounce } from "use-debounce";
+import useAgAggregate from "@/hooks/aggregator/useAgAggregate";
 
 const MOCK_AG_SOR_DATA: SorSwapResponse = {
   tokenAddresses: [
@@ -334,13 +335,44 @@ function SwapForm() {
   useEffect(() => {
     if (isPriceImpactTooHigh) setIsConfirmSwapAnyway(false);
   }, [isPriceImpactTooHigh]);
-  const isInvalidAmountOut = useMemo(() => {
-    return new BigNumber(amountOut).lte(0);
-  }, [amountOut]);
+  const canSwap = useMemo(() => {
+    const validTokens =
+      tokenIn.type && tokenOut.type && tokenIn.type !== tokenOut.type;
+    const validAmounts =
+      new BigNumber(amountIn).gt(0) && new BigNumber(amountOut).gt(0);
+    const validSwaps = Number(agSorData?.swaps?.length) > 0;
+    return (
+      !!validTokens &&
+      validAmounts &&
+      validSwaps &&
+      !!currentAccount &&
+      !isInsufficientBalance
+    );
+  }, [
+    tokenIn,
+    tokenOut,
+    amountIn,
+    amountOut,
+    agSorData,
+    currentAccount,
+    isInsufficientBalance,
+  ]);
 
+  const { aggregate } = useAgAggregate();
   const handleSwap = useCallback(() => {
-    console.log("Swap", tokenIn, tokenOut, amountIn);
-  }, [tokenIn, tokenOut, amountIn]);
+    if (!canSwap || !agSorData) return;
+    aggregate({
+      sorResponse: agSorData,
+      tokenAmountIn: {
+        token: tokenIn,
+        amount: amountIn,
+      },
+      tokenAmountOut: {
+        token: tokenOut,
+        amount: amountOut,
+      },
+    });
+  }, [canSwap, agSorData, tokenIn, amountIn, tokenOut, amountOut, aggregate]);
 
   const actionButton = useMemo(() => {
     if (!currentAccount) {
@@ -418,7 +450,10 @@ function SwapForm() {
 
       return (
         <a
-          className="flex items-center justify-center p-4 rounded-2xl bg-[#F24DB0] h-[4.25rem] text-white cursor-pointer hover:bg-[#FD65C0] hover:shadow-soft-3 hover:shadow-[#F24DB0]"
+          className={tw(
+            "flex items-center justify-center p-4 rounded-2xl bg-[#F24DB0] h-[4.25rem] text-white cursor-pointer hover:bg-[#FD65C0] hover:shadow-soft-3 hover:shadow-[#F24DB0]",
+            !canSwap && "cursor-not-allowed opacity-60",
+          )}
           type="button"
           onClick={handleSwap}
         >
@@ -431,7 +466,7 @@ function SwapForm() {
       <button
         className="relative overflow-hidden flex items-center justify-center p-4 rounded-2xl bg-iris-100 text-white font-cyberwayRiders text-[2rem]/none shadow-soft-3 shadow-[rgba(102,103,238,0.50)] hover:bg-[#6667EE] hover:shadow-[#6667EE] active:bg-[#3E40E3] active:shadow-none disabled:cursor-not-allowed disabled:opacity-60"
         onClick={handleSwap}
-        disabled={isInvalidAmountOut}
+        disabled={!canSwap}
       >
         <span className="z-10">Swap</span>
         <img
@@ -449,7 +484,7 @@ function SwapForm() {
     isInsufficientBalance,
     isPriceImpactTooHigh,
     isConfirmSwapAnyway,
-    isInvalidAmountOut,
+    canSwap,
     handleSwap,
   ]);
 

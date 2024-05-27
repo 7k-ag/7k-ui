@@ -2,14 +2,14 @@ import { ICExport } from "@/assets/icons";
 import Avatar from "@/components/Avatar";
 import ExplorerTokenLink from "@/components/ExplorerLink/ExplorerTokenLink";
 import TextAmt from "@/components/TextAmt";
-import { TokenBalance } from "@/types/token";
+import { TokenAmount } from "@/types/token";
 import { formatBalance } from "@/utils/number";
 import { getStaticTokenById } from "@/utils/token";
 import { formatAddress } from "@mysten/sui.js/utils";
 
 type Props = {
-  item: TokenBalance;
-  onClick: (item: TokenBalance) => void;
+  item: TokenAmount;
+  onClick: (item: TokenAmount) => void;
 };
 
 function TokenItem({ item, onClick }: Props) {
@@ -37,7 +37,7 @@ function TokenItem({ item, onClick }: Props) {
       </div>
       <div className="flex flex-col justify-end gap-1 items-end">
         <TextAmt
-          number={formatBalance(item.balance, item.token.decimals ?? 0)}
+          number={formatBalance(item.amount, item.token.decimals ?? 0)}
         />
         <ExplorerTokenLink
           tokenId={item.token.type}
