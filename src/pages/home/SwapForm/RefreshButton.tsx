@@ -1,16 +1,17 @@
 import { ICRefresh } from "@/assets/icons";
+import tw from "@/utils/twmerge";
 
-interface Props {
-  onClick: () => void;
-  disabled?: boolean;
-}
-
-function RefreshButton({ onClick, disabled }: Props) {
+function RefreshButton({
+  className,
+  ...rest
+}: JSX.IntrinsicElements["button"]) {
   return (
     <button
-      className="flex items-center justify-center p-2 rounded-lg bg-[#252734] text-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
-      onClick={onClick}
-      disabled={disabled}
+      className={tw(
+        "flex items-center justify-center p-2 rounded-lg bg-[#252734] text-gray-100 disabled:cursor-not-allowed disabled:opacity-60",
+        className,
+      )}
+      {...rest}
     >
       <ICRefresh className="w-4 aspect-square" />
     </button>

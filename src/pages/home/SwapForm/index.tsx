@@ -239,7 +239,11 @@ function SwapForm() {
     );
   }, [tokenInId, tokenOutId, amountInDebounce]);
 
-  const { data: agSorData, refetch: refetchAgSor } = useAgSor({
+  const {
+    data: agSorData,
+    refetch: refetchAgSor,
+    isFetching: isRefreshingAgSor,
+  } = useAgSor({
     tokenInId: tokenInId,
     tokenOutId: tokenOutId,
     amountIn: amountInDebounce
@@ -456,7 +460,10 @@ function SwapForm() {
           <span className="text-sm/none font-semibold">Swap</span>
         </div>
         <div className="flex items-center gap-2">
-          <RefreshButton onClick={refetchAgSor} disabled={!enabledAgSor} />
+          <RefreshButton
+            onClick={() => refetchAgSor()}
+            disabled={!enabledAgSor || isRefreshingAgSor}
+          />
           <SlippageDropdown />
         </div>
       </div>
