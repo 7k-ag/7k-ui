@@ -1,11 +1,9 @@
-// Copyright (c) Mysten Labs, Inc.
-// SPDX-License-Identifier: Apache-2.0
 import { useSignTransactionBlock, useSuiClient } from "@mysten/dapp-kit";
 import { SuiTransactionBlockResponse } from "@mysten/sui.js/client";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 // import toast from "react-hot-toast";
 
-export function useTransactionExecution() {
+export function useTxExecution() {
   const client = useSuiClient();
   const { mutateAsync: signTransactionBlock } = useSignTransactionBlock();
 
@@ -26,10 +24,10 @@ export function useTransactionExecution() {
         },
       });
 
-      // toast.success("Successfully executed transaction!");
+      // console.success("Successfully executed transaction!");
       return res;
     } catch (e: any) {
-      // toast.error(`Failed to execute transaction: ${e.message as string}`);
+      // console.error(`Failed to execute transaction: ${e.message as string}`);
     }
   };
 

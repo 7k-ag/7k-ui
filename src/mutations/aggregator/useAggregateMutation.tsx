@@ -1,9 +1,13 @@
-import { useTransactionExecution } from "@/hooks/transactions/useTransactionExecution";
+import { agSlippageAtom } from "@/atoms/aggregator.atom";
+import { useTxExecution } from "@/hooks/transactions/useTxExecution";
 import { SorSwapResponse } from "@/types/swapInfo";
 import { TokenAmount } from "@/types/token";
-import { useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
+import FlowXProtocolContract from "@/utils/protocols/flowx";
+// import { useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 
 interface Params {
   sorResponse: SorSwapResponse;
@@ -13,9 +17,10 @@ interface Params {
 
 const useAggregateMutation = () => {
   const currentAccount = useCurrentAccount();
-  const client = useSuiClient();
-  const executeTransaction = useTransactionExecution();
+  // const client = useSuiClient();
+  const executeTransaction = useTxExecution();
   const queryClient = useQueryClient();
+  const slippage = useAtomValue(agSlippageAtom);
 
   return useMutation({
     mutationFn: async ({
@@ -29,17 +34,23 @@ const useAggregateMutation = () => {
 
       // create a new transaction block
       const txb = new TransactionBlock();
-      console.log(
-        txb,
-        sorResponse,
-        tokenAmountIn,
-        tokenAmountOut,
-        client,
-        executeTransaction,
+
+      const flowXContract = new FlowXProtocolContract(
+        tokenAmountIn.token,
+        tokenAmountOut.token,
+        sorResponse.swaps[0],
+        slippage,
+        currentAccount.address,
       );
+
+      await flowXContract.buildTransaction(txb);
+
+      return executeTransaction(txb);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getAllBalances"] });
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["getAllBalances"] });
+      }, 1_000);
     },
   });
 };

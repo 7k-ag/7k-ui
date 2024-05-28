@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@bicarus/utils": "^0.0.9-alpha.0",
+    "@flowx-pkg/ts-sdk": "^0.0.14",
     "@mysten/dapp-kit": "0.13.2",
     "@mysten/sui.js": "0.54.1",
     "@radix-ui/colors": "^3.0.0",
