@@ -31,6 +31,7 @@
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "turbos-clmm-sdk": "^2.5.0",
     "use-debounce": "^10.0.0",
     "virtua": "^0.31.0"
   },
