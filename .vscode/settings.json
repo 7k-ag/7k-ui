@@ -1,5 +1,12 @@
 {
-  "cSpell.words": ["bignumber", "denormalize", "twmerge"],
+  "cSpell.words": [
+    "bignumber",
+    "denormalize",
+    "Fullnode",
+    "kriya",
+    "mysten",
+    "twmerge"
+  ],
   "eslint.options": {
     "experimental": {
       "useFlatConfig": true

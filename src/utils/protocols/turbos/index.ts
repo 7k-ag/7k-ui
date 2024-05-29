@@ -1,4 +1,5 @@
 import { ProtocolContract } from "@/types/protocols";
+import { denormalizeTokenId } from "@/utils/token";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { Network, TurbosSdk } from "turbos-clmm-sdk";
 
@@ -35,8 +36,8 @@ class TurbosProtocolContract extends ProtocolContract {
             ),
           },
         ],
-        coinTypeA: this.swapInfo.assetIn,
-        coinTypeB: this.swapInfo.assetOut,
+        coinTypeA: denormalizeTokenId(this.swapInfo.assetIn),
+        coinTypeB: denormalizeTokenId(this.swapInfo.assetOut),
         address,
         amountA: swapResult.amount_a,
         amountB: swapResult.amount_b,
