@@ -1,0 +1,83 @@
+import { getFullnodeUrl, SuiClient } from "@mysten/sui.js/client";
+
+export const CLOCK_ID =
+  "0x0000000000000000000000000000000000000000000000000000000000000006";
+export const CONTAINER_OBJECT_ID =
+  "0xb65dcbf63fd3ad5d0ebfbf334780dc9f785eff38a4459e37ab08fa79576ee511";
+export const PACKAGE_OBJECT_ID =
+  "0xba153169476e8c3114962261d1edc70de5ad9781b83cc617ecc8c1923191cae0";
+export const FUNCTION = {
+  ADD_LIQUIDITY: "add_liquidity",
+  ZAP_IN: "zap_in",
+  REMOVE_LIQUIDITY: "remove_liquidity",
+  REMOVE_LIQUIDITY_DIRECT: "remove_liquidity_direct",
+  ZAP_OUT_TO_X: "zap_out_to_x",
+  ZAP_OUT_TO_Y: "zap_out_to_y",
+  SWAP_EXACT_OUTPUT: "swap_exact_output",
+  SWAP_EXACT_INPUT: "swap_exact_input",
+  SWAP_EXACT_INPUT_DOUBLEHOP: "swap_exact_input_doublehop",
+  SWAP_EXACT_OUTPUT_DOUBLEHOP: "swap_exact_output_doublehop",
+  SWAP_EXACT_INPUT_TRIPLEHOP: "swap_exact_input_triplehop",
+  SWAP_EXACT_OUTPUT_TRIPLEHOP: "swap_exact_output_triplehop",
+  SWAP_EXACT_INPUT_DOUBLE_OUTPUT: "swap_exact_input_double_output",
+  SWAP_EXACT_INPUT_TRIPLE_OUTPUT: "swap_exact_input_triple_output",
+  SWAP_EXACT_INPUT_QUADRUPLE_OUTPUT: "swap_exact_input_quadruple_output",
+  SWAP_EXACT_INPUT_QUINTUPLE_OUTPUT: "swap_exact_input_quintuple_output",
+  SWAP_EXACT_DOUBLE_INPUT: "swap_exact_double_input",
+  SWAP_EXACT_TRIPLE_INPUT: "swap_exact_triple_input",
+  SWAP_EXACT_QUADRUPLE_INPUT: "swap_exact_quadruple_input",
+  SWAP_EXACT_QUINTUPLE_INPUT: "swap_exact_quintuple_input",
+  MINT_XFLX: "mint_and_transfer",
+  LAZY_BURN_XFLX: "lazy_burn",
+  BURN_XFLX: "burn",
+  CANCEL_LAZY_BURN_XFLX: "cancel_lazy_burn",
+  BOOST_POSITION: "boost_position",
+  DECREASE_POSITION: "decrease_position",
+  DECREASE_POSITION_EMERGENCY_FAAS: "decrease_position_emergency",
+  HARVEST_POSITION: "harvest_position",
+  INCREASE_POSITION: "increase_position",
+  LOCK_POSITION: "lock_position",
+  OPEN_POSITION: "open_position",
+  UNBOOST_POSITION: "unboost_position",
+  OPEN_BOOST_POSITION: "open_and_boost_position",
+  CAMPAIGN_DEPOSIT: "deposit",
+  CREATE_POOL: "create_pool",
+  FETCH_PENDING_REWARD: "fetch_pending_reward",
+  UPDATE_END_TIME: "update_end_time",
+  MINT: "mint",
+  PRE_SALE_DEPOSIT: "pre_sale_deposit",
+  PUBLIC_SALE_DEPOSIT: "public_sale_deposit",
+  PUBLIC_SALE_WITHDRAW: "public_sale_withdraw",
+  CLAIM_PRE_SALE: "claim_pre_sale",
+  CLAIM_PUBLIC_SALE: "claim_public_sale",
+  HARVEST: "harvest",
+  CLAIM_FUND_PRE_SALE: "claim_fund_pre_sale",
+  CLAIM: "claim",
+  REFUND: "refund",
+  RELEASE: "release",
+  COMMIT: "commit",
+  BORROW_MUT_PAIR_AND_TREASURY: "borrow_mut_pair_and_treasury",
+  BURN: "burn",
+  STAKE: "stake",
+  UN_STAKE: "unstake",
+  CREATE_INITIAL_POOL: "create_and_initialize_pool",
+  INCREASE_LIQUIDITY: "increase_liquidity",
+  DECREASE_LIQUIDITY: "decrease_liquidity",
+  COLLECT: "collect",
+  COLLECT_POOL_REWARD: "collect_pool_reward",
+  CLOSE_POSITION: "close_position",
+  INIT_PATH: "initialize_path",
+  INIT_ROUTING: "initialize_routing",
+  NEXT_ROUTING_V3: "next",
+  SETTLE_ROUTING_V3: "settle",
+  FLOWX_SWAP: "flowx_swap_exact_input",
+  FLOWX_SWAP_CLMM: "flowx_clmm_swap_exact_input",
+  CHECK_DEALINE: "check_deadline",
+  CHECK_AMOUNT_THRESHOLD: "check_amount_threshold",
+};
+
+export const SUI_TYPE = "0x2::sui::SUI";
+
+export const provider = new SuiClient({
+  url: getFullnodeUrl(import.meta.env.VITE_NETWORK),
+});
