@@ -24,202 +24,8 @@ import useAgSor from "@/hooks/aggregator/useAgSor";
 import useTokenMetadata from "@/hooks/tokens/useTokenMetadata";
 import { Checkbox } from "@/components/UI/Checkbox";
 import OrderInfo from "./OrderInfo";
-// import { SorSwapResponse } from "@/types/swapInfo";
 import { useDebounce } from "use-debounce";
 import useAggregateMutation from "@/mutations/aggregator/useAggregateMutation";
-
-// const MOCK_AG_SOR_DATA: SorSwapResponse = {
-//   tokenAddresses: [
-//     "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
-//     "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
-//     "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
-//     "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
-//     "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
-//   ],
-//   swaps: [
-//     {
-//       poolId:
-//         "0x0254747f5ca059a1972cd7f6016485d51392a3fde608107b93bbaebea550f703",
-//       assetInIndex: 0,
-//       assetOutIndex: 1,
-//       amount: "6670391650",
-//       returnAmount: "55874364188",
-//       assetIn:
-//         "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
-//       assetOut:
-//         "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
-//       functionName: "delegate",
-//       arguments: [],
-//     },
-//     {
-//       poolId:
-//         "0x3ec8401520022aac67935188eb1f82c13cbbc949ab04692e5b62445d89b61c9f",
-//       assetInIndex: 1,
-//       assetOutIndex: 2,
-//       amount: "0",
-//       returnAmount: "64361660195",
-//       assetIn:
-//         "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
-//       assetOut:
-//         "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
-//       functionName: "delegate",
-//       arguments: [],
-//     },
-//     {
-//       poolId:
-//         "0x81f6bdb7f443b2a55de8554d2d694b7666069a481526a1ff0c91775265ac0fc1",
-//       assetInIndex: 2,
-//       assetOutIndex: 3,
-//       amount: "0",
-//       returnAmount: "178607",
-//       assetIn:
-//         "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
-//       assetOut:
-//         "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
-//       functionName: "delegate",
-//       arguments: [],
-//     },
-//     {
-//       poolId:
-//         "0x43ca1a6de20d7feabcaa460ac3798a6fdc754d3a83b49dff93221612c1370dcc",
-//       assetInIndex: 3,
-//       assetOutIndex: 4,
-//       amount: "0",
-//       returnAmount: "7003804",
-//       assetIn:
-//         "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
-//       assetOut:
-//         "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
-//       functionName: "delegate",
-//       arguments: [],
-//     },
-//   ],
-//   swapAmount: "6.67039165",
-//   returnAmount: "7.003804",
-//   swapAmountWithDecimal: "6670391650",
-//   returnAmountWithDecimal: "7003804",
-//   tokenIn:
-//     "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
-//   tokenOut:
-//     "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
-//   marketSp: "0.961114817412351909",
-//   routes: [
-//     {
-//       hops: [
-//         {
-//           poolId:
-//             "0x0254747f5ca059a1972cd7f6016485d51392a3fde608107b93bbaebea550f703",
-//           pool: {
-//             allTokens: [
-//               {
-//                 address:
-//                   "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
-//                 decimal: 9,
-//               },
-//               {
-//                 address:
-//                   "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
-//                 decimal: 9,
-//               },
-//             ],
-//             type: "cetusv2",
-//           },
-//           tokenIn:
-//             "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
-//           tokenInAmount: "6.67039165",
-//           tokenOut:
-//             "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
-//           tokenOutAmount: "55.874364188",
-//         },
-//         {
-//           poolId:
-//             "0x3ec8401520022aac67935188eb1f82c13cbbc949ab04692e5b62445d89b61c9f",
-//           pool: {
-//             allTokens: [
-//               {
-//                 address:
-//                   "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
-//                 decimal: 9,
-//               },
-//               {
-//                 address:
-//                   "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
-//                 decimal: 9,
-//               },
-//             ],
-//             type: "cetusv2",
-//           },
-//           tokenIn:
-//             "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
-//           tokenInAmount: "55.874364188",
-//           tokenOut:
-//             "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
-//           tokenOutAmount: "64.361660195",
-//         },
-//         {
-//           poolId:
-//             "0x81f6bdb7f443b2a55de8554d2d694b7666069a481526a1ff0c91775265ac0fc1",
-//           pool: {
-//             allTokens: [
-//               {
-//                 address:
-//                   "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
-//                 decimal: 8,
-//               },
-//               {
-//                 address:
-//                   "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
-//                 decimal: 9,
-//               },
-//             ],
-//             type: "cetusv2",
-//           },
-//           tokenIn:
-//             "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
-//           tokenInAmount: "64.361660195",
-//           tokenOut:
-//             "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
-//           tokenOutAmount: "0.00178607",
-//         },
-//         {
-//           poolId:
-//             "0x43ca1a6de20d7feabcaa460ac3798a6fdc754d3a83b49dff93221612c1370dcc",
-//           pool: {
-//             allTokens: [
-//               {
-//                 address:
-//                   "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
-//                 decimal: 8,
-//               },
-//               {
-//                 address:
-//                   "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
-//                 decimal: 6,
-//               },
-//             ],
-//             type: "kriya",
-//           },
-//           tokenIn:
-//             "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
-//           tokenInAmount: "0.00178607",
-//           tokenOut:
-//             "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
-//           tokenOutAmount: "7.003804",
-//         },
-//       ],
-//       tokenIn:
-//         "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
-//       tokenInAmount: "6.67039165",
-//       tokenOut:
-//         "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
-//       tokenOutAmount: "7.003804",
-//     },
-//   ],
-//   effectivePrice: 0.9523955339127137,
-//   effectivePriceReserved: 1.0499839241073647,
-//   priceImpact: 0.0,
-//   warning: "TokenNotHasPrice",
-// };
 
 function SwapForm() {
   const [tokenIn, setTokenIn] = useAtom(agTokenInAtom);
@@ -336,7 +142,7 @@ function SwapForm() {
     if (isPriceImpactTooHigh) setIsConfirmSwapAnyway(false);
   }, [isPriceImpactTooHigh]);
 
-  const { mutate: aggregate, isPending } = useAggregateMutation();
+  const { isPending } = useAggregateMutation();
 
   const canSwap = useMemo(() => {
     const validTokens =
@@ -365,33 +171,33 @@ function SwapForm() {
 
   const handleSwap = useCallback(() => {
     if (!canSwap || !agSorData) return;
-    aggregate(
-      {
-        sorResponse: agSorData,
-        tokenAmountIn: {
-          token: tokenIn,
-          amount: amountIn,
-        },
-        tokenAmountOut: {
-          token: tokenOut,
-          amount: amountOut,
-        },
-      },
-      {
-        onSuccess: () => {
-          setAmountIn("");
-        },
-      },
-    );
+    // aggregate(
+    //   {
+    //     sorResponse: agSorData,
+    //     tokenAmountIn: {
+    //       token: tokenIn,
+    //       amount: amountIn,
+    //     },
+    //     tokenAmountOut: {
+    //       token: tokenOut,
+    //       amount: amountOut,
+    //     },
+    //   },
+    //   {
+    //     onSuccess: () => {
+    //       setAmountIn("");
+    //     },
+    //   },
+    // );
   }, [
     canSwap,
     agSorData,
-    tokenIn,
-    amountIn,
-    tokenOut,
-    amountOut,
-    aggregate,
-    setAmountIn,
+    // tokenIn,
+    // amountIn,
+    // tokenOut,
+    // amountOut,
+    // aggregate,
+    // setAmountIn,
   ]);
 
   const actionButton = useMemo(() => {
@@ -606,12 +412,7 @@ function SwapForm() {
 
       {actionButton}
 
-      <OrderInfo
-        tokenIn={tokenIn}
-        tokenOut={tokenOut}
-        agSorData={agSorData}
-        // agSorData={agSorData || MOCK_AG_SOR_DATA}
-      />
+      <OrderInfo tokenIn={tokenIn} tokenOut={tokenOut} agSorData={agSorData} />
     </div>
   );
 }
