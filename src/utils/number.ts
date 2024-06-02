@@ -5,5 +5,8 @@ export function formatBalance(balance: BigNumber.Value, decimals: number) {
 }
 
 export function formatRawBalance(balance: BigNumber.Value, decimals: number) {
-  return new BigNumber(balance).multipliedBy(new BigNumber(10).pow(decimals));
+  const rawBalance = new BigNumber(balance).multipliedBy(
+    new BigNumber(10).pow(decimals),
+  );
+  return new BigNumber(rawBalance.toFixed(0));
 }

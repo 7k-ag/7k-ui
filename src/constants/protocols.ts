@@ -11,6 +11,10 @@ export const DEX_PROTOCOLS_MAP: Record<
   string,
   { name: string; url?: string; logoUrl?: string }
 > = {
+  cetus: {
+    name: "Cetus",
+    logoUrl: ImgCetus,
+  },
   cetusv2: {
     name: "Cetus",
     logoUrl: ImgCetus,

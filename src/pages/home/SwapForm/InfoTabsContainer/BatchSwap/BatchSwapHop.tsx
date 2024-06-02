@@ -9,8 +9,13 @@ import useGetDexInfo from "@/hooks/aggregator/useGetDexInfo";
 import { SorHop } from "@/types/swapInfo";
 import TokenGroupAvatar from "@/components/Avatar/TokenGroupAvatar";
 import useTokensMetadata from "@/hooks/tokens/useTokensMetadata";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { StaticToken } from "@/constants/tokens/staticTokens";
+import tw from "@/utils/twmerge";
+
+const Dot = memo(function Dot({ className }: { className?: string }) {
+  return <div className={tw("rounded-full bg-[#FAB01C]", className)} />;
+});
 
 interface Props {
   hop: SorHop;
@@ -30,25 +35,36 @@ function BatchSwapHop({ hop }: Props) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-20">
-            <Avatar className="w-4 h-4" src={dex.logoUrl} alt={dex.name} />
-            <div className="w-px h-3 bg-gray-100" />
+          <button className="relative flex items-center p-3 rounded-lg bg-black-80 border border-iris-100 min-w-[3.375rem] min-h-[2.625rem]">
+            <div className="absolute -left-0.5 top-1/2 transform -translate-y-1/2">
+              <Dot className="w-1 h-1" />
+            </div>
             <TokenGroupAvatar tokens={tokens} />
+            <div className="absolute -right-0.5 top-1/2 transform -translate-y-1/2">
+              <Dot className="w-1 h-1" />
+            </div>
           </button>
         </TooltipTrigger>
-        <TooltipContent className="flex flex-col gap-4 p-2 rounded-[0.625rem] bg-gray-20 shadow-soft-2 shadow-skin-base/50 backdrop-blur-xl z-10">
-          <div className="flex items-center gap-2">
-            <Avatar className="w-4 h-4" src={dex.logoUrl} alt={dex.name} />
-            <span className="font-bold text-sm">{dex.name}</span>
-          </div>
-          <div className="flex items-center gap-1 px-4 py-3 bg-skin-card rounded-lg">
+        <TooltipContent className="flex flex-col gap-4 p-4 rounded-[1.25rem] bg-black-60/40 shadow-soft-2 shadow-skin-base/50 backdrop-blur-md z-10 border border-black-40 min-w-[12.125rem] max-w-full">
+          <div className="flex items-center gap-1">
             <TokenGroupAvatar
               tokens={tokens}
-              tokenClassName="w-3.5 h-3.5 -ml-1 first:ml-0"
+              tokenClassName="w-3 h-3 -ml-1 first:ml-0"
             />
-            <span className="text-xs">
+            <span className="text-sm/none text-[#A8A8C7]">
               {tokens.map((t) => t.symbol).join(" - ")}
             </span>
+          </div>
+          <div className="flex flex-col gap-2.5 p-2 rounded-xl bg-black-40">
+            <div className="flex items-center gap-1">
+              <Avatar
+                className="w-3 h-3 rounded-full"
+                src={dex.logoUrl}
+                alt={dex.name}
+              />
+              <span className="text-2xs/none text-[#A8A8C7]">{dex.name}</span>
+            </div>
+            <span className="text-lg/none text-white">0.41%</span>
           </div>
         </TooltipContent>
       </Tooltip>
