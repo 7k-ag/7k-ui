@@ -43,14 +43,14 @@ function WalletInfo({ currentAccount }: Props) {
         <div className="flex flex-col gap-2">
           <CopyBtn
             text={address}
-            className="flex items-center justify-between gap-2 px-6 py-3 rounded-2xl bg-[#373947]"
+            className="flex items-center justify-between gap-2 px-6 py-3 rounded-2xl bg-black-50"
           >
             <span className="text-sm/none text-[#A8A8C7]">Copy Address</span>
             <ICCopy className="w-5 h-auto" />
           </CopyBtn>
           <ExplorerAccountLink
             account={address}
-            className="flex items-center justify-between gap-2 px-6 py-3 rounded-2xl bg-[#373947]"
+            className="flex items-center justify-between gap-2 px-6 py-3 rounded-2xl bg-black-50"
           >
             <span className="text-sm/none text-[#A8A8C7]">
               Open in Explorer
@@ -59,7 +59,7 @@ function WalletInfo({ currentAccount }: Props) {
           </ExplorerAccountLink>
           <button
             onClick={() => disconnectWallet()}
-            className="flex items-center justify-between gap-2 px-6 py-3 rounded-2xl bg-[#373947]"
+            className="flex items-center justify-between gap-2 px-6 py-3 rounded-2xl bg-black-50"
           >
             <span className="text-sm/none text-[#A8A8C7]">Disconnect</span>
             <ICPowerOff className="w-5 h-auto" />

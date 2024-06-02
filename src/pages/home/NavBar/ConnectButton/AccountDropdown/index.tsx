@@ -56,7 +56,7 @@ function AccountDropdown({ currentAccount }: Props) {
                   <span>{formatAddress(currentAccount.address)}</span>
                 </SheetTitle>
                 <button
-                  className="flex items-center justify-center px-2 py-1 rounded-lg bg-[#1C1E2C] font-bold text-sm/none text-black-inverted-100"
+                  className="flex items-center justify-center px-2 py-1 rounded-lg bg-black-80 font-bold text-sm/none text-black-inverted-100"
                   onClick={() => setOpenSheet(false)}
                 >
                   ESC

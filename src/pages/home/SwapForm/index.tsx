@@ -26,6 +26,7 @@ import { Checkbox } from "@/components/UI/Checkbox";
 import OrderInfo from "./OrderInfo";
 import { useDebounce } from "use-debounce";
 import useAggregateMutation from "@/mutations/aggregator/useAggregateMutation";
+import InfoTabsContainer from "./InfoTabsContainer";
 
 function SwapForm() {
   const [tokenIn, setTokenIn] = useAtom(agTokenInAtom);
@@ -205,7 +206,7 @@ function SwapForm() {
       return (
         <ConnectModal
           trigger={
-            <button className="flex items-center justify-center gap-2 p-4 rounded-2xl bg-[#343B51] h-[4.25rem] text-white hover:bg-[#404862] active:bg-[#31384F]">
+            <button className="flex items-center justify-center gap-2 p-4 rounded-2xl bg-darkblue-100 h-[4.25rem] text-white hover:bg-[#404862] active:bg-[#31384F]">
               <ICWallet className="w-4 aspect-square" />
               <span className="text-lg/none">Connect Wallet</span>
             </button>
@@ -217,7 +218,7 @@ function SwapForm() {
     // if (isInsufficientSuiBalance) {
     //   return (
     //     <button
-    //       className="flex items-center justify-center p-4 rounded-2xl bg-[#343B51] h-[4.25rem] text-white disabled:cursor-not-allowed disabled:opacity-60"
+    //       className="flex items-center justify-center p-4 rounded-2xl bg-darkblue-100 h-[4.25rem] text-white disabled:cursor-not-allowed disabled:opacity-60"
     //       disabled
     //     >
     //       <span className="text-lg/none">Insufficient SUI balance</span>
@@ -228,7 +229,7 @@ function SwapForm() {
     if (!amountIn || !tokenIn) {
       return (
         <button
-          className="flex items-center justify-center p-4 rounded-2xl bg-[#343B51] h-[4.25rem] text-white disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex items-center justify-center p-4 rounded-2xl bg-darkblue-100 h-[4.25rem] text-white disabled:cursor-not-allowed disabled:opacity-60"
           disabled
         >
           <span className="text-lg/none">Enter an amount</span>
@@ -239,7 +240,7 @@ function SwapForm() {
     if (isInsufficientBalance) {
       return (
         <button
-          className="flex items-center justify-center p-4 rounded-2xl bg-[#343B51] h-[4.25rem] text-white disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex items-center justify-center p-4 rounded-2xl bg-darkblue-100 h-[4.25rem] text-white disabled:cursor-not-allowed disabled:opacity-60"
           disabled
         >
           <span className="text-lg/none">
@@ -268,7 +269,7 @@ function SwapForm() {
 
       if (!isConfirmSwapAnyway) {
         return (
-          <div className="flex items-center justify-center p-4 rounded-2xl bg-[#343B51] h-[4.25rem] text-white">
+          <div className="flex items-center justify-center p-4 rounded-2xl bg-darkblue-100 h-[4.25rem] text-white">
             {confirmElement}
           </div>
         );
@@ -315,104 +316,118 @@ function SwapForm() {
   ]);
 
   return (
-    <div className="flex flex-col gap-2 p-2 rounded-3xl max-w-[24rem] w-full">
-      <div className="flex items-center justify-between gap-2.5">
-        <div className="flex items-center gap-4 px-2">
-          <span className="text-sm/none font-semibold">Swap</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <RefreshButton
-            onClick={() => refetchAgSor()}
-            disabled={!enabledAgSor || isRefreshingAgSor}
+    <div className="flex w-full gap-12 px-[4.5rem] pb-6 mx-auto max-w-screen-3xl">
+      <div className="max-w-[25.5rem] w-full">
+        <div className="flex flex-col gap-2 p-2 rounded-3xl bg-black-60">
+          <div className="flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-4 px-2">
+              <span className="text-sm/none font-semibold">Swap</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <RefreshButton
+                onClick={() => refetchAgSor()}
+                disabled={!enabledAgSor || isRefreshingAgSor}
+              />
+              <SlippageDropdown />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-0.5">
+            <div className="flex flex-col gap-6 p-1 rounded-2xl bg-black-80">
+              <div className="flex items-center gap-1">
+                <InputCurrency
+                  className="flex-1 p-2 outline-none bg-transparent text-lg sm:text-2xl overflow-hidden grow"
+                  placeholder="0"
+                  value={amountIn}
+                  onChange={(e) => setAmountIn(e.target.value)}
+                />
+                <SelectTokenModal
+                  token={tokenIn}
+                  setToken={(token) => {
+                    setTokenIn(token);
+                    setAmountIn("");
+                  }}
+                  pivotTokenId={tokenOutId}
+                  accountBalancesObj={accountBalancesObj}
+                />
+              </div>
+              <div className="flex items-center justify-between gap-2.5 p-2 rounded-xl">
+                <TextAmt
+                  number={amountInUsdValue}
+                  className={tw(
+                    "text-gray-100 text-2xs font-light",
+                    (!amountIn || isLoadingTokenInData) && "invisible",
+                  )}
+                  prefix="~ $"
+                />
+                {tokenInBalance.isGreaterThan(0) ? (
+                  <button className="font-normal" onClick={handleClickBalance}>
+                    <span className="text-gray-100">Balance: </span>
+                    <TextAmt
+                      number={tokenInBalance}
+                      className="text-[#85FF99]"
+                    />
+                  </button>
+                ) : (
+                  <span className="font-normal">
+                    <span className="text-gray-100">Balance: </span>
+                    <span className="text-gray-100">0</span>
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <button
+              className="flex items-center justify-center m-auto p-1 bg-[#252734] text-gray-100 rounded-lg -my-3 z-[2]"
+              onClick={handleRevertTokens}
+            >
+              <ICFrame className="w-4 aspect-square" />
+            </button>
+
+            <div className="flex flex-col gap-6 p-1 rounded-2xl border border-black-80">
+              <div className="flex items-center gap-1">
+                <InputCurrency
+                  className="flex-1 p-2 outline-none bg-transparent text-lg sm:text-2xl overflow-hidden grow disabled:text-gray-100"
+                  placeholder="0"
+                  disabled
+                  value={amountOut}
+                />
+                <SelectTokenModal
+                  token={tokenOut}
+                  setToken={setTokenOut}
+                  pivotTokenId={tokenInId}
+                  accountBalancesObj={accountBalancesObj}
+                />
+              </div>
+              <div className="flex items-center justify-between gap-2.5 p-2 rounded-xl">
+                <TextAmt
+                  number={amountOutUsdValue}
+                  className={tw(
+                    "text-gray-100 text-2xs font-light",
+                    isLoadingTokenOutData && "invisible",
+                  )}
+                  prefix="~ $"
+                />
+                <span className="font-normal invisible">
+                  <span className="text-gray-100">Balance: </span>
+                  <span className="text-gray-100">0</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {actionButton}
+
+          <OrderInfo
+            tokenIn={tokenIn}
+            tokenOut={tokenOut}
+            agSorData={agSorData}
           />
-          <SlippageDropdown />
         </div>
       </div>
-
-      <div className="flex flex-col gap-0.5">
-        <div className="flex flex-col gap-6 p-1 rounded-2xl bg-[#1C1E2C]">
-          <div className="flex items-center gap-1">
-            <InputCurrency
-              className="flex-1 p-2 outline-none bg-transparent text-lg sm:text-2xl overflow-hidden grow"
-              placeholder="0"
-              value={amountIn}
-              onChange={(e) => setAmountIn(e.target.value)}
-            />
-            <SelectTokenModal
-              token={tokenIn}
-              setToken={(token) => {
-                setTokenIn(token);
-                setAmountIn("");
-              }}
-              pivotTokenId={tokenOutId}
-              accountBalancesObj={accountBalancesObj}
-            />
-          </div>
-          <div className="flex items-center justify-between gap-2.5 p-2 rounded-xl">
-            <TextAmt
-              number={amountInUsdValue}
-              className={tw(
-                "text-gray-100 text-2xs font-light",
-                (!amountIn || isLoadingTokenInData) && "invisible",
-              )}
-              prefix="~ $"
-            />
-            {tokenInBalance.isGreaterThan(0) ? (
-              <button className="font-normal" onClick={handleClickBalance}>
-                <span className="text-gray-100">Balance: </span>
-                <TextAmt number={tokenInBalance} className="text-[#85FF99]" />
-              </button>
-            ) : (
-              <span className="font-normal">
-                <span className="text-gray-100">Balance: </span>
-                <span className="text-gray-100">0</span>
-              </span>
-            )}
-          </div>
-        </div>
-
-        <button
-          className="flex items-center justify-center m-auto p-1 bg-[#252734] text-gray-100 rounded-lg -my-3 z-[2]"
-          onClick={handleRevertTokens}
-        >
-          <ICFrame className="w-4 aspect-square" />
-        </button>
-
-        <div className="flex flex-col gap-6 p-1 rounded-2xl border border-[#1C1E2C]">
-          <div className="flex items-center gap-1">
-            <InputCurrency
-              className="flex-1 p-2 outline-none bg-transparent text-lg sm:text-2xl overflow-hidden grow disabled:text-[#868098]"
-              placeholder="0"
-              disabled
-              value={amountOut}
-            />
-            <SelectTokenModal
-              token={tokenOut}
-              setToken={setTokenOut}
-              pivotTokenId={tokenInId}
-              accountBalancesObj={accountBalancesObj}
-            />
-          </div>
-          <div className="flex items-center justify-between gap-2.5 p-2 rounded-xl">
-            <TextAmt
-              number={amountOutUsdValue}
-              className={tw(
-                "text-gray-100 text-2xs font-light",
-                isLoadingTokenOutData && "invisible",
-              )}
-              prefix="~ $"
-            />
-            <span className="font-normal invisible">
-              <span className="text-gray-100">Balance: </span>
-              <span className="text-gray-100">0</span>
-            </span>
-          </div>
-        </div>
+      <div className="grow">
+        <InfoTabsContainer swapInfo={agSorData} />
       </div>
-
-      {actionButton}
-
-      <OrderInfo tokenIn={tokenIn} tokenOut={tokenOut} agSorData={agSorData} />
     </div>
   );
 }

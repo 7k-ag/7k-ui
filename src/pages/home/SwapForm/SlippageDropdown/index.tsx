@@ -47,11 +47,11 @@ function SlippageDropdown() {
 
   const trigger = useMemo(
     () => (
-      <button className="flex items-center gap-2 p-2 pl-4 border border-[#373947] rounded-xl">
+      <button className="flex items-center gap-2 p-2 pl-4 border border-black-50 rounded-xl">
         <span>Slippage</span>
         <TextAmt
           number={displaySlip}
-          className="flex items-center justify-center w-9 p-1 rounded-lg bg-[#373947]"
+          className="flex items-center justify-center w-9 p-1 rounded-lg bg-black-50"
           suffix="%"
         />
       </button>
@@ -90,7 +90,7 @@ function SlippageDropdown() {
           >
             1%
           </SlippageButton>
-          <div className="flex items-center h-8 p-2 gap-1 bg-[#0B0D14] border border-[#373947] rounded-lg">
+          <div className="flex items-center h-8 p-2 gap-1 bg-black-100 border border-black-50 rounded-lg">
             <InputCurrency
               className="bg-transparent outline-none w-[2.8125rem]"
               placeholder="..."
@@ -152,7 +152,7 @@ function SlippageDropdown() {
                   Adjust Slippage
                 </SheetTitle>
                 <button
-                  className="flex items-center justify-center px-2 py-1 rounded-lg bg-[#1C1E2C] font-bold text-sm/none text-black-inverted-100"
+                  className="flex items-center justify-center px-2 py-1 rounded-lg bg-black-80 font-bold text-sm/none text-black-inverted-100"
                   onClick={() => setOpenSheet(false)}
                 >
                   ESC

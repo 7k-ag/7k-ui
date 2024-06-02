@@ -1,5 +1,6 @@
 import { ReactComponent as ICCheck } from "./check.svg";
 import { ReactComponent as ICChevronDown } from "./chevron-down.svg";
+import { ReactComponent as ICChevronRight } from "./chevron-right.svg";
 import { ReactComponent as ICCopy } from "./copy.svg";
 import { ReactComponent as ICDocumentSearch } from "./document-search.svg";
 import { ReactComponent as ICExport } from "./export.svg";
@@ -13,6 +14,7 @@ import { ReactComponent as ICWallet } from "./wallet.svg";
 export {
   ICCheck,
   ICChevronDown,
+  ICChevronRight,
   ICCopy,
   ICDocumentSearch,
   ICExport,

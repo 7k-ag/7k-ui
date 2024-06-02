@@ -5,9 +5,7 @@ function HomePage() {
   return (
     <main className="flex flex-col gap-6 sm:gap-[3.75rem]">
       <NavBar />
-      <div className="flex items-center justify-center">
-        <SwapForm />
-      </div>
+      <SwapForm />
     </main>
   );
 }

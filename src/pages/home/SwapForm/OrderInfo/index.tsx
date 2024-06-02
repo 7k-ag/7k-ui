@@ -149,7 +149,7 @@ function OrderInfo({ tokenIn, tokenOut, agSorData }: Props) {
           "border",
           isPriceImpactTooHigh
             ? "border-[#F24DB0] bg-[#F24DB0]/20"
-            : "border-[#343B51] bg-[#343B51]",
+            : "border-darkblue-100 bg-darkblue-100",
         )}
       >
         <AccordionTrigger

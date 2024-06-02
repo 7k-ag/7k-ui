@@ -15,7 +15,7 @@ type Props = {
 function TokenItem({ item, onClick }: Props) {
   return (
     <button
-      className="h-12 w-full flex items-center justify-between gap-2 p-2 mb-1 bg-[#373947] rounded-lg"
+      className="h-12 w-full flex items-center justify-between gap-2 p-2 mb-1 bg-black-50 rounded-lg"
       onClick={() => onClick(item)}
     >
       <div className="flex items-center gap-2">

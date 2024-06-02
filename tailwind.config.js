@@ -90,6 +90,7 @@ export default {
           },
         },
         gray: {
+          100: "#868098",
           20: "#F2F1F5",
           inverted: {
             20: "#35344A",
@@ -97,10 +98,12 @@ export default {
         },
         black: {
           DEFAULT: "#000",
-          100: "#000",
-          80: "#221533",
+          100: "#0B0D14",
+          80: "#1C1E2C",
           70: "#2E1D45",
-          60: "#615078",
+          60: "#232534",
+          50: "#373947",
+          40: "#373A4D",
           inverted: {
             100: "#FCFBFE",
             80: "#FDFDFF",
@@ -134,6 +137,9 @@ export default {
         },
         pink: {},
         electricblue: "#000FFE",
+        darkblue: {
+          100: "#343B51",
+        },
       },
       textColor: {
         skin: {

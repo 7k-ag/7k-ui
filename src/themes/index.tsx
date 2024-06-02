@@ -1,4 +1,8 @@
+import THEME from "@/constants/theme";
 import { ThemeVars } from "@mysten/dapp-kit";
+
+const colorIris100 = THEME.colors?.iris?.["100"] || "#5D5FEF";
+const colorDarkBlue100 = THEME.colors?.darkblue?.["100"] || "#343B51";
 
 // Light theme copied from dapp-kit
 export const uiKitDarkTheme: ThemeVars = {
@@ -6,18 +10,18 @@ export const uiKitDarkTheme: ThemeVars = {
     modalOverlay: "blur(0)",
   },
   backgroundColors: {
-    primaryButton: "#5D5FEF",
-    primaryButtonHover: "#5D5FEF",
-    outlineButtonHover: "#5D5FEF",
+    primaryButton: colorIris100,
+    primaryButtonHover: colorIris100,
+    outlineButtonHover: colorIris100,
     modalOverlay: "rgba(24 36 53 / 20%)",
-    modalPrimary: "#343B51",
+    modalPrimary: colorDarkBlue100,
     modalSecondary: "#252734",
     iconButton: "transparent",
     iconButtonHover: "#252734",
-    dropdownMenu: "#343B51",
+    dropdownMenu: colorDarkBlue100,
     dropdownMenuSeparator: "#F3F6F8",
-    walletItemSelected: "#343B51",
-    walletItemHover: "#343B51",
+    walletItemSelected: colorDarkBlue100,
+    walletItemHover: colorDarkBlue100,
   },
   borderColors: {
     outlineButton: "#E4E4E7",
