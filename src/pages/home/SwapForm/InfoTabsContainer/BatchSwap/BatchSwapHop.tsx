@@ -9,15 +9,11 @@ import useGetDexInfo from "@/hooks/aggregator/useGetDexInfo";
 import { SorHop } from "@/types/swapInfo";
 import TokenGroupAvatar from "@/components/Avatar/TokenGroupAvatar";
 import useTokensMetadata from "@/hooks/tokens/useTokensMetadata";
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import { StaticToken } from "@/constants/tokens/staticTokens";
-import tw from "@/utils/twmerge";
 import { Percent } from "@bicarus/utils";
 import TextAmt from "@/components/TextAmt";
-
-const Dot = memo(function Dot({ className }: { className?: string }) {
-  return <div className={tw("rounded-full bg-[#FAB01C]", className)} />;
-});
+import BatchSwapDot from "./BatchSwapDot";
 
 interface Props {
   hop: SorHop;
@@ -40,11 +36,11 @@ function BatchSwapHop({ hop, splitPercent }: Props) {
         <TooltipTrigger asChild>
           <button className="relative flex items-center p-3 rounded-lg bg-black-80 border border-iris-100 min-w-[3.375rem] min-h-[2.625rem]">
             <div className="absolute -left-0.5 top-1/2 transform -translate-y-1/2">
-              <Dot className="w-1 h-1" />
+              <BatchSwapDot className="w-1 h-1" />
             </div>
             <TokenGroupAvatar tokens={tokens} />
             <div className="absolute -right-0.5 top-1/2 transform -translate-y-1/2">
-              <Dot className="w-1 h-1" />
+              <BatchSwapDot className="w-1 h-1" />
             </div>
           </button>
         </TooltipTrigger>
