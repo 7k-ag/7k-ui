@@ -6,6 +6,7 @@ import TextAmt from "@/components/TextAmt";
 import { ICChevronRight } from "@/assets/icons";
 import useTokenMetadata from "@/hooks/tokens/useTokenMetadata";
 import { SorRoute } from "@/types/swapInfo";
+import { Percent } from "@bicarus/utils";
 
 const TokenSwapAmount = memo(function TokenSwapAmount({
   identifier,
@@ -43,14 +44,19 @@ function BatchSwapRoute({ route }: Props) {
         <div className="w-8 h-8 flex items-center justify-center">
           <ICChevronRight className="w-5 h-auto" />
         </div>
-        {route.hops.map((h) => (
-          <Fragment key={`${h.poolId}-${h.tokenIn}-${h.tokenOut}`}>
-            <BatchSwapHop hop={h} />
-            <div className="w-8 h-8 flex items-center justify-center">
-              <ICChevronRight className="w-5 h-auto" />
-            </div>
-          </Fragment>
-        ))}
+        {route.hops.map((h) => {
+          const splitPercent = new BigNumber(h.tokenInAmount).lte(0)
+            ? new Percent(100, 100)
+            : new Percent(h.tokenInAmount, route.tokenInAmount);
+          return (
+            <Fragment key={`${h.poolId}-${h.tokenIn}-${h.tokenOut}`}>
+              <BatchSwapHop hop={h} splitPercent={splitPercent} />
+              <div className="w-8 h-8 flex items-center justify-center">
+                <ICChevronRight className="w-5 h-auto" />
+              </div>
+            </Fragment>
+          );
+        })}
         <TokenSwapAmount
           identifier={route.tokenOut}
           amount={route.tokenOutAmount}

@@ -6,7 +6,7 @@ import { ICFrame, ICWallet } from "@/assets/icons";
 import ImgSwap from "@/assets/images/swap.png";
 import { ConnectModal, useCurrentAccount } from "@mysten/dapp-kit";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import {
   agAmountInAtom,
   agTokenInAtom,
@@ -27,8 +27,11 @@ import OrderInfo from "./OrderInfo";
 import { useDebounce } from "use-debounce";
 import useAggregateMutation from "@/mutations/aggregator/useAggregateMutation";
 import InfoTabsContainer from "./InfoTabsContainer";
+import { isMobileAtom } from "@/atoms/layout.atom";
 
 function SwapForm() {
+  const isMobile = useAtomValue(isMobileAtom);
+
   const [tokenIn, setTokenIn] = useAtom(agTokenInAtom);
   const [tokenOut, setTokenOut] = useAtom(agTokenOutAtom);
   const [amountIn, setAmountIn] = useAtom(agAmountInAtom);
@@ -316,7 +319,7 @@ function SwapForm() {
   ]);
 
   return (
-    <div className="flex w-full gap-12 px-[4.5rem] pb-6 mx-auto max-w-screen-3xl">
+    <div className="flex w-full gap-12 px-6 sm:px-[4.5rem] pb-6 mx-auto max-w-screen-3xl">
       <div className="max-w-[25.5rem] w-full">
         <div className="flex flex-col gap-2 p-2 rounded-3xl bg-black-60">
           <div className="flex items-center justify-between gap-2.5">
@@ -425,9 +428,11 @@ function SwapForm() {
           />
         </div>
       </div>
-      <div className="grow">
-        <InfoTabsContainer swapInfo={agSorData} />
-      </div>
+      {!isMobile && (
+        <div className="grow">
+          <InfoTabsContainer swapInfo={agSorData} />
+        </div>
+      )}
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { ReactComponent as ICFrame } from "./frame.svg";
 import { ReactComponent as ICInfoCircle } from "./info-circle.svg";
 import { ReactComponent as ICPowerOff } from "./power-off.svg";
 import { ReactComponent as ICRefresh } from "./refresh.svg";
+import { ReactComponent as ICRoute } from "./route.svg";
 import { ReactComponent as ICSearch } from "./search.svg";
 import { ReactComponent as ICWallet } from "./wallet.svg";
 
@@ -22,6 +23,7 @@ export {
   ICInfoCircle,
   ICPowerOff,
   ICRefresh,
+  ICRoute,
   ICSearch,
   ICWallet,
 };

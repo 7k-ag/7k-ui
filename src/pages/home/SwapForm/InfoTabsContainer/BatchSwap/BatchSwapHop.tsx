@@ -12,6 +12,8 @@ import useTokensMetadata from "@/hooks/tokens/useTokensMetadata";
 import { memo, useMemo } from "react";
 import { StaticToken } from "@/constants/tokens/staticTokens";
 import tw from "@/utils/twmerge";
+import { Percent } from "@bicarus/utils";
+import TextAmt from "@/components/TextAmt";
 
 const Dot = memo(function Dot({ className }: { className?: string }) {
   return <div className={tw("rounded-full bg-[#FAB01C]", className)} />;
@@ -19,8 +21,9 @@ const Dot = memo(function Dot({ className }: { className?: string }) {
 
 interface Props {
   hop: SorHop;
+  splitPercent: Percent;
 }
-function BatchSwapHop({ hop }: Props) {
+function BatchSwapHop({ hop, splitPercent }: Props) {
   const dex = useGetDexInfo(hop.pool.type);
   const { data } =
     useTokensMetadata(hop.pool.allTokens.map((t) => t.address)) ?? [];
@@ -64,7 +67,11 @@ function BatchSwapHop({ hop }: Props) {
               />
               <span className="text-2xs/none text-[#A8A8C7]">{dex.name}</span>
             </div>
-            <span className="text-lg/none text-white">0.41%</span>
+            <TextAmt
+              number={splitPercent.toBigNumber().multipliedBy(100)}
+              className="text-lg/none text-white"
+              suffix="%"
+            />
           </div>
         </TooltipContent>
       </Tooltip>

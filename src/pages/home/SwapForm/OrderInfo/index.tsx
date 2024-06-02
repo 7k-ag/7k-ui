@@ -6,7 +6,7 @@ import Accordion, {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/UI/Accordion";
-import { ICInfoCircle } from "@/assets/icons";
+import { ICInfoCircle, ICRoute } from "@/assets/icons";
 import TextAmt from "@/components/TextAmt";
 import tw from "@/utils/twmerge";
 import {
@@ -21,6 +21,8 @@ import { agSlippageAtom } from "@/atoms/aggregator.atom";
 import OrderItem from "./OrderItem";
 import PriceButton from "./PriceButton";
 import BigNumber from "bignumber.js";
+import { isMobileAtom } from "@/atoms/layout.atom";
+import BatchSwapSheet from "../InfoTabsContainer/BatchSwap/BatchSwapSheet";
 
 type PriceMode = "in-out" | "out-in";
 
@@ -31,6 +33,8 @@ interface Props {
 }
 
 function OrderInfo({ tokenIn, tokenOut, agSorData }: Props) {
+  const isMobile = useAtomValue(isMobileAtom);
+
   const [openAccordion, setOpenAccordion] = useState("");
   const [priceMode, setPriceMode] = useState<PriceMode>("in-out");
 
@@ -241,6 +245,22 @@ function OrderInfo({ tokenIn, tokenOut, agSorData }: Props) {
                     </span>
                   }
                 />
+                {isMobile && (
+                  <BatchSwapSheet
+                    trigger={
+                      <button
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-black-80 min-h-10 disabled:cursor-not-allowed disabled:opacity-60"
+                        disabled={
+                          !(agSorData && Number(agSorData?.routes?.length) > 0)
+                        }
+                      >
+                        <ICRoute className="w-4 h-auto" />
+                        <span className="text-xs/none">Aggregator Route</span>
+                      </button>
+                    }
+                    swapInfo={agSorData}
+                  />
+                )}
               </div>
             </AccordionContent>
           )}
