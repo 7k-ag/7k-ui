@@ -318,6 +318,10 @@ function SwapForm() {
     handleSwap,
   ]);
 
+  const isInvalidAmountOut = useMemo(() => {
+    return new BigNumber(amountOut).lte(0);
+  }, [amountOut]);
+
   return (
     <div className="flex w-full gap-12 px-6 sm:px-[4.5rem] pb-6 mx-auto max-w-screen-3xl">
       <div className="max-w-[25.5rem] w-full">
@@ -387,7 +391,12 @@ function SwapForm() {
               <ICFrame className="w-4 aspect-square" />
             </button>
 
-            <div className="flex flex-col gap-6 p-1 rounded-2xl border border-black-80">
+            <div
+              className={tw(
+                "flex flex-col gap-6 p-1 rounded-2xl border",
+                !isInvalidAmountOut ? "border-black-80" : "border-transparent",
+              )}
+            >
               <div className="flex items-center gap-1">
                 <InputCurrency
                   className="flex-1 p-2 outline-none bg-transparent text-lg sm:text-2xl overflow-hidden grow disabled:text-gray-100"
@@ -407,7 +416,8 @@ function SwapForm() {
                   number={amountOutUsdValue}
                   className={tw(
                     "text-gray-100 text-2xs font-light",
-                    isLoadingTokenOutData && "invisible",
+                    (isLoadingTokenOutData || isInvalidAmountOut) &&
+                      "invisible",
                   )}
                   prefix="~ $"
                 />
