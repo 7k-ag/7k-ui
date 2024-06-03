@@ -323,7 +323,7 @@ function SwapForm() {
   }, [amountOut]);
 
   return (
-    <div className="flex w-full gap-12 px-6 sm:px-[4.5rem] pb-6 mx-auto max-w-screen-3xl">
+    <div className="flex w-full gap-8 px-6 sm:px-12 pb-6 mx-auto max-w-screen-3xl">
       <div className="max-w-[25.5rem] w-full">
         <div className="flex flex-col gap-2 p-2 rounded-3xl bg-black-60">
           <div className="flex items-center justify-between gap-2.5">

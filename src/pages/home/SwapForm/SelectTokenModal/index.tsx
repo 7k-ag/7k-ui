@@ -117,7 +117,7 @@ function SelectTokenModal({
   const tokenList = useMemo(() => {
     if (searchTerm && isLoading) {
       return (
-        <VList style={{ height: 320 }} className="vlist">
+        <VList style={{ height: 320 }} className="scroll-container">
           <Repeat count={10}>
             <Skeleton className="h-12 p-4 bg-black-80 rounded-xl text-sm/normal mb-1" />
           </Repeat>
@@ -130,7 +130,7 @@ function SelectTokenModal({
     }
 
     return (
-      <VList style={{ height: 320 }} className="vlist">
+      <VList style={{ height: 320 }} className="scroll-container">
         {tokenBalances.map((tokenBalance) => (
           <TokenItem
             key={tokenBalance.token.type}

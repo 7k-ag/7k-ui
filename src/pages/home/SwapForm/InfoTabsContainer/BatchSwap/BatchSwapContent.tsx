@@ -20,19 +20,16 @@ function BatchSwapContent({ swapInfo }: Props) {
               key="data"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="grid grid-cols-1 flex-col gap-6 overflow-auto"
+              className="grid gap-6"
             >
-              <ScrollArea>
-                <BatchSwapSorRoute swapInfo={swapInfo} />
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
+              <BatchSwapSorRoute swapInfo={swapInfo} />
             </m.div>
           ) : (
             <m.div
               key="empty"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="grid grid-cols-1 flex-col gap-6"
+              className="grid gap-6"
             >
               <EmptyData />
             </m.div>
