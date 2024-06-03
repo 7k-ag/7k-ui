@@ -11,15 +11,12 @@ import TokenGroupAvatar from "@/components/Avatar/TokenGroupAvatar";
 import useTokensMetadata from "@/hooks/tokens/useTokensMetadata";
 import { useMemo } from "react";
 import { StaticToken } from "@/constants/tokens/staticTokens";
-import { Percent } from "@bicarus/utils";
-import TextAmt from "@/components/TextAmt";
 import BatchSwapDot from "./BatchSwapDot";
 
 interface Props {
   hop: SorHop;
-  splitPct: Percent;
 }
-function BatchSwapHop({ hop, splitPct }: Props) {
+function BatchSwapHop({ hop }: Props) {
   const dex = useGetDexInfo(hop.pool.type);
   const { data } =
     useTokensMetadata(hop.pool.allTokens.map((t) => t.address)) ?? [];
@@ -34,10 +31,12 @@ function BatchSwapHop({ hop, splitPct }: Props) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button className="relative flex items-center p-3 rounded-lg bg-black-80 border border-iris-100 min-w-[3.375rem] min-h-[2.625rem]">
+          <button className="relative flex items-center gap-2 p-3 rounded-lg bg-black-80 border border-iris-100 min-w-[5.4375rem] min-h-[2.625rem]">
             <div className="absolute -left-0.5 top-1/2 transform -translate-y-1/2">
               <BatchSwapDot className="w-1 h-1" />
             </div>
+            <Avatar className="w-4 h-4" src={dex.logoUrl} alt={dex.name} />
+            <div className="w-px h-3 bg-gray-100" />
             <TokenGroupAvatar tokens={tokens} />
             <div className="absolute -right-0.5 top-1/2 transform -translate-y-1/2">
               <BatchSwapDot className="w-1 h-1" />
@@ -65,11 +64,6 @@ function BatchSwapHop({ hop, splitPct }: Props) {
                 {dex.name}
               </span>
             </div>
-            <TextAmt
-              number={splitPct.toBigNumber().multipliedBy(100).toFixed(2)}
-              className="text-lg/none text-white"
-              suffix="%"
-            />
           </div>
         </TooltipContent>
       </Tooltip>

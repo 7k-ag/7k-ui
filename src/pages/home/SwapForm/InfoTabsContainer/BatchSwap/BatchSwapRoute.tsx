@@ -1,9 +1,9 @@
-import BigNumber from "bignumber.js";
 import BatchSwapHop from "./BatchSwapHop";
 import { SorRoute } from "@/types/swapInfo";
 import { Percent } from "@bicarus/utils";
 import tw from "@/utils/twmerge";
 import TextAmt from "@/components/TextAmt";
+import { Fragment } from "react/jsx-runtime";
 
 function getMaxColumns(maxHops: number): number {
   const pctCount = 1;
@@ -53,35 +53,25 @@ function BatchSwapRoute({
           </div>
           <div />
           {route.hops.map((h, i) => {
-            const splitPct = new BigNumber(h.tokenInAmount).lte(0)
-              ? new Percent(100, 100)
-              : new Percent(h.tokenInAmount, route.tokenInAmount);
             return (
-              <>
+              <Fragment key={`${h.poolId}-${h.tokenIn}-${h.tokenOut}`}>
                 <div className="flex items-centers">
                   <BatchSwapHop
                     key={`${h.poolId}-${h.tokenIn}-${h.tokenOut}`}
                     hop={h}
-                    splitPct={splitPct}
                   />
                   {i !== route.hops.length - 1 && (
-                    <div
-                      key={`divider-${i}`}
-                      className="flex-1 flex items-center justify-center"
-                    >
+                    <div className="flex-1 flex items-center justify-center">
                       <div className="h-px w-full border-t border-dashed border-[#FAB01C]" />
                     </div>
                   )}
                 </div>
                 {i !== route.hops.length - 1 && (
-                  <div
-                    key={`divider-${i}`}
-                    className="flex items-center justify-center"
-                  >
+                  <div className="flex items-center justify-center">
                     <div className="h-px w-full border-t border-dashed border-[#FAB01C]" />
                   </div>
                 )}
-              </>
+              </Fragment>
             );
           })}
         </div>

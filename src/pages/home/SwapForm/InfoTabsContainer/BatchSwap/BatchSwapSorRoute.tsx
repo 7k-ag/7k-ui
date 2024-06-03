@@ -29,7 +29,7 @@ function BatchSwapSorRoute({ swapInfo }: Props) {
   });
 
   return (
-    <div className="grid grid-cols-10 min-w-[67.5rem] sm:min-w-0">
+    <div className="grid grid-cols-12 min-w-[67.5rem] sm:min-w-0">
       <div className="col-span-2">
         <div className="flex items-center">
           <div className="relative flex flex-col gap-2.5 p-2 rounded-2xl bg-black-60 min-w-[60%]">
@@ -53,7 +53,7 @@ function BatchSwapSorRoute({ swapInfo }: Props) {
         </div>
       </div>
 
-      <div className="col-span-6">
+      <div className="col-span-8">
         <div className="relative flex flex-col mt-[0.5px] overflow-hidden">
           <div
             className="absolute top-9 bottom-9 left-0 h-full w-5 border-r border-dashed border-black-40 rounded-tr-2xl"
