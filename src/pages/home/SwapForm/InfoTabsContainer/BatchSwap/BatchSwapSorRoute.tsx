@@ -1,9 +1,21 @@
 import TokenAvatar from "@/components/Avatar/TokenAvatar";
 import BatchSwapRoute from "./BatchSwapRoute";
 import TextAmt from "@/components/TextAmt";
-import { SorSwapResponse } from "@/types/swapInfo";
+import { SorRoute, SorSwapResponse } from "@/types/swapInfo";
 import useTokenMetadata from "@/hooks/tokens/useTokenMetadata";
 import BatchSwapDot from "./BatchSwapDot";
+import { Percent } from "@bicarus/utils";
+
+function getMaxHops(routes?: SorRoute[]): number {
+  if (!routes) return 0;
+  let maxHops = 0;
+  for (const route of routes) {
+    if (route.hops.length > maxHops) {
+      maxHops = route.hops.length;
+    }
+  }
+  return maxHops;
+}
 
 interface Props {
   swapInfo: SorSwapResponse;
@@ -52,15 +64,23 @@ function BatchSwapSorRoute({ swapInfo }: Props) {
             style={{ height: "calc(100% - 80px)" }}
           />
           <div className="mx-5">
-            {swapInfo.routes?.map((r, i) => (
-              <BatchSwapRoute
-                key={i}
-                isOnly={swapInfo?.routes?.length === 1}
-                route={r}
-                isFirst={i === 0}
-                isLast={i === Number(swapInfo?.routes?.length) - 1}
-              />
-            ))}
+            {swapInfo.routes?.map((r, i) => {
+              const routePct = new Percent(
+                r.tokenInAmount,
+                swapInfo.swapAmount,
+              );
+              return (
+                <BatchSwapRoute
+                  key={i}
+                  route={r}
+                  routePct={routePct}
+                  maxHops={getMaxHops(swapInfo.routes)}
+                  isOnly={swapInfo?.routes?.length === 1}
+                  isFirst={i === 0}
+                  isLast={i === Number(swapInfo?.routes?.length) - 1}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

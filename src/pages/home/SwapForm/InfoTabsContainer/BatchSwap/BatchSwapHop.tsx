@@ -17,9 +17,9 @@ import BatchSwapDot from "./BatchSwapDot";
 
 interface Props {
   hop: SorHop;
-  splitPercent: Percent;
+  splitPct: Percent;
 }
-function BatchSwapHop({ hop, splitPercent }: Props) {
+function BatchSwapHop({ hop, splitPct }: Props) {
   const dex = useGetDexInfo(hop.pool.type);
   const { data } =
     useTokensMetadata(hop.pool.allTokens.map((t) => t.address)) ?? [];
@@ -61,10 +61,12 @@ function BatchSwapHop({ hop, splitPercent }: Props) {
                 src={dex.logoUrl}
                 alt={dex.name}
               />
-              <span className="text-2xs/none text-[#A8A8C7]">{dex.name}</span>
+              <span className="font-normal text-2xs/none text-[#A8A8C7]">
+                {dex.name}
+              </span>
             </div>
             <TextAmt
-              number={splitPercent.toBigNumber().multipliedBy(100)}
+              number={splitPct.toBigNumber().multipliedBy(100).toFixed(2)}
               className="text-lg/none text-white"
               suffix="%"
             />
